@@ -106,7 +106,7 @@ module.exports = function({ api }) {
 		}
 	})();	
 	
-	global.loading(`[ BOT_INFO ] success!\n[ NAME ]: ${(!global.config.BOTNAME) ? "Bot Messenger" : global.config.BOTNAME} \n[ FBID ]: ${api.getCurrentUserID()} \n[ PRFX ]: ${global.config.PREFIX}`);
+	global.loading(`[ BOT_INFO ] success!\n[ NAME ]: ${(!global.config.BOTNAME) ? "Bot Messenger" : global.config.BOTNAME} \n[ FBID ]: ${api.getCurrentUserID()} \n[ PRFX ]: ${global.config.PREFIX}`, "LOADED");
   
 	const fs = require('fs');
 	fs.readFile('main.js', 'utf8', (err, data) => {
