@@ -153,7 +153,7 @@ module.exports = function({ api, models, Users, Threads, Currencies }) {
         timestamps.set(senderID, dateNow);
 
         if (DeveloperMode == !![]) {
-                logger(global.getText("handleCommand", "executeCommand", time, commandName, senderID, threadID, args.join(" "), (Date.now()) - dateNow));
+                logger(global.getText("handleCommand", "executeCommand", time, commandName, senderID, threadID, args.join(" "), (Date.now()) - dateNow), "DEV MODE");
               }
               return;
             }
