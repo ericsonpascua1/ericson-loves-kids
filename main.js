@@ -93,10 +93,6 @@ global.moduleData = new Array();
 global.language = new Object();
 global.account = new Object();
 
-// ────────────────── //
-// Removed chalk and gradient implementations
-// ────────────────── //
-
 const errorMessages = [];
 if (errorMessages.length > 0) {
   console.log("Commands with errors:");
@@ -104,7 +100,7 @@ if (errorMessages.length > 0) {
     console.log(`${command}: ${error}`);
   });
 }
-// ────────────────── //
+
 var configValue;
 try {
   global.client.configPath = join(global.client.mainPath, "config.json");
@@ -282,7 +278,7 @@ function onBot() {
 
             console.err
           } catch (error) {
-            console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(command)} failed with error: ${error.message}` + `\n`, "COMMAND");
+            console.error(`ERROR! ${command} failed with error: ${error.message}` + `\n`, "COMMAND");
           }
         }
       })(),
@@ -295,7 +291,7 @@ function onBot() {
             const event = require(join(global.client.mainPath, 'modules/events', ev));
             const { config, onLoad, run } = event;
             if (!config || !config.name || !run) {
-              console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(ev)} Module is not in the correct format. `);
+              console.error(`ERROR! ${ev} Module is not in the correct format. `);
               continue;
             }
 
@@ -308,7 +304,7 @@ function onBot() {
             }
 
             if (global.client.events.has(config.name)) {
-              console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(ev)} Module is already loaded!`);
+              console.error(`ERROR! ${ev} Module is already loaded!`);
               continue;
             }
             if (config.dependencies) {
@@ -345,7 +341,7 @@ function onBot() {
             console.log(`LOADED ${config.name} success`);
           }
           catch (err) {
-            console.error(`${chalk.hex("#ff0000")('ERROR!')} ${cb(ev)} failed with error: ${err.message}` + `\n`, "EVENT");
+            console.error(`ERROR! ${cb(ev)} failed with error: ${err.message}` + `\n`, "EVENT");
           }
         }
       })();
