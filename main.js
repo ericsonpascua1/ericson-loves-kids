@@ -271,7 +271,7 @@ function onBot() {
             if (module.handleEvent) global.client.eventRegistered.push(config.name);
             global.client.commands.set(config.name, module);
             try {
-              console.log(`LOADED ${config.name} success`);
+              console.log(`[ LOADED ]LOADED ${config.name} success`);
             } catch (err) {
               console.error("An error occurred while loading the command:", err);
             }
@@ -338,7 +338,7 @@ function onBot() {
               await onLoad(eventData);
             }
             global.client.events.set(config.name, event);
-            console.log(`LOADED ${config.name} success`);
+            console.log(`[ EVENT ] LOADED ${config.name} success`);
           }
           catch (err) {
             console.error(`ERROR! ${cb(ev)} failed with error: ${err.message}` + `\n`, "EVENT");
