@@ -15,7 +15,7 @@ const axios = require("axios");
 
 module.exports.run = async function ({ api, event, args, Users, Threads }) {
 
-  const apiKey = "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";
+  const apiKey = process.env.OPENAI_API_KEY;
   const url = "https://api.openai.com/v1/chat/completions";
 
   async function getUserName(api, senderID) {
