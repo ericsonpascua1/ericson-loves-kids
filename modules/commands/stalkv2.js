@@ -8,7 +8,7 @@ module.exports.config = {
     name: "stalkv2",
     version: "1.0.0",
     hasPermision: 0,
-    credits: `Deku & Yan Maglinte`, //Added Canvas Design by Yan
+    credits: `Deku & Aki Hayakawa`, //Added Canvas Design by Yan
     description: "get info using uid/mention/reply to a message",
     usePrefix: true,
     usages: "[reply/uid/@mention/url]",

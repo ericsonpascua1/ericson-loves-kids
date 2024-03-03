@@ -1,6 +1,6 @@
 const https = require('https');
 
-const pingUrl = `https://akihayakawa-bot-9751277c256d.herokuapp.com`;
+const pingUrl = `https://akihayakawa-bot-2ce81e53041b.herokuapp.com/`;
 
 let totalMinutes = 0;
 
@@ -94,80 +94,9 @@ global.language = new Object();
 global.account = new Object();
 
 // ────────────────── //
-const chalk = require("chalk");
-const gradient = require("gradient-string");
-const theme = config.DESIGN.Theme;
-let cra;
-let co;
-let cb;
-let cv;
-if (theme.toLowerCase() === 'blue') {
-  cra = gradient('yellow', 'lime', 'green');
-  co = gradient("#243aff", "#4687f0", "#5800d4");
-  cb = chalk.blueBright;
-  cv = chalk.bold.hex("#3467eb");
-} else if (theme.toLowerCase() === 'fiery') {
-  cra = gradient('orange', 'orange', 'yellow');
-  co = gradient("#fc2803", "#fc6f03", "#fcba03");
-  cb = chalk.hex("#fff308");
-  cv = chalk.bold.hex("#fc3205");
-} else if (theme.toLowerCase() === 'red') {
-  cra = gradient('yellow', 'lime', 'green');
-  co = gradient("red", "orange");
-  cb = chalk.hex("#ff0000");
-  cv = chalk.bold.hex("#ff0000");
-} else if (theme.toLowerCase() === 'aqua') {
-  cra = gradient("#6883f7", "#8b9ff7", "#b1bffc")
-  co = gradient("#0030ff", "#4e6cf2");
-  cb = chalk.hex("#3056ff");
-  cv = chalk.bold.hex("#0332ff");
-} else if (theme.toLowerCase() === 'pink') {
-  cra = gradient('purple', 'pink');
-  co = gradient("#d94fff", "purple");
-  cb = chalk.hex("#6a00e3");
-  cv = chalk.bold.hex("#6a00e3");
-} else if (theme.toLowerCase() === 'retro') {
-  cra = gradient("orange", "purple");
-  co = gradient.retro;
-  cb = chalk.hex("#ffce63");
-  cv = chalk.bold.hex("#3c09ab");
-} else if (theme.toLowerCase() === 'sunlight') {
-  cra = gradient("#f5bd31", "#f5e131");
-  co = gradient("#ffff00", "#ffe600");
-  cb = chalk.hex("#faf2ac");
-  cv = chalk.bold.hex("#ffe600");
-} else if (theme.toLowerCase() === 'teen') {
-  cra = gradient("#81fcf8", "#853858");
-  co = gradient.teen;
-  cb = chalk.hex("#a1d5f7");
-  cv = chalk.bold.hex("#ad0042");
-} else if (theme.toLowerCase() === 'summer') {
-  cra = gradient("#fcff4d", "#4de1ff");
-  co = gradient.summer;
-  cb = chalk.hex("#ffff00");
-  cv = chalk.bold.hex("#fff700")
-} else if (theme.toLowerCase() === 'flower') {
-  cra = gradient("yellow", "yellow", "#81ff6e");
-  co = gradient.pastel;
-  cb = gradient('#47ff00', "#47ff75");
-  cv = chalk.bold.hex("#47ffbc");
-} else if (theme.toLowerCase() === 'ghost') {
-  cra = gradient("#0a658a", "#0a7f8a", "#0db5aa");
-  co = gradient.mind;
-  cb = chalk.blueBright;
-  cv = chalk.bold.hex("#1390f0");
-} else if (theme === 'hacker') {
-  cra = chalk.hex('#4be813');
-  co = gradient('#47a127', '#0eed19', '#27f231');
-  cb = chalk.hex("#22f013");
-  cv = chalk.bold.hex("#0eed19");
-} else {
-  cra = gradient('yellow', 'lime', 'green');
-  co = gradient("#243aff", "#4687f0", "#5800d4");
-  cb = chalk.blueBright;
-  cv = chalk.bold.hex("#3467eb");
-}
+// Removed chalk and gradient implementations
 // ────────────────── //
+
 const errorMessages = [];
 if (errorMessages.length > 0) {
   console.log("Commands with errors:");
@@ -266,7 +195,7 @@ function onBot() {
       (async () => {
         const commandsPath = `${global.client.mainPath}/modules/commands`;
         const listCommand = readdirSync(commandsPath).filter(command => command.endsWith('.js') && !command.includes('example') && !global.config.commandDisabled.includes(command));
-        console.log(cv(`\n` + `──LOADING COMMANDS─●`));
+        console.log(`\n` + `──LOADING COMMANDS─●`);
         for (const command of listCommand) {
           try {
             const module = require(`${commandsPath}/${command}`);
@@ -276,7 +205,7 @@ function onBot() {
               try {
                 throw new Error(`[ COMMAND ] ${command} command has no name property or empty!`);
               } catch (error) {
-                console.log(chalk.red(error.message));
+                console.log(error.message);
                 continue;
               }
             }
@@ -284,18 +213,18 @@ function onBot() {
               try {
                 throw new Error(`[ COMMAND ] ${command} commandCategory is empty!`);
               } catch (error) {
-                console.log(chalk.red(error.message));
+                console.log(error.message);
                 continue;
               }
             }
 
             if (!config?.hasOwnProperty('usePrefix')) {
-              console.log(`Command`, chalk.hex("#ff0000")(command) + ` does not have the "usePrefix" property.`);
+              console.log(`Command`, command + ` does not have the "usePrefix" property.`);
               continue;
             }
 
             if (global.client.commands.has(config.name || '')) {
-              console.log(chalk.red(`[ COMMAND ] ${chalk.hex("#FFFF00")(command)} Module is already loaded!`));
+              console.log(`[ COMMAND ] ${command} Module is already loaded!`);
               continue;
             }
             const { dependencies, envConfig } = config;
@@ -312,7 +241,7 @@ function onBot() {
                   require.cache = {};
                 } catch (error) {
                   const errorMessage = `[PACKAGE] Failed to install package ${reqDependency} for module`;
-                  global.loading.err(chalk.hex('#ff7100')(errorMessage), 'LOADED');
+                  console.error(errorMessage);
                 }
               });
             }
@@ -346,27 +275,27 @@ function onBot() {
             if (module.handleEvent) global.client.eventRegistered.push(config.name);
             global.client.commands.set(config.name, module);
             try {
-              global.loading(`${cra(`LOADED`)} ${cb(config.name)} success`, "COMMAND");
+              console.log(`LOADED ${config.name} success`);
             } catch (err) {
               console.error("An error occurred while loading the command:", err);
             }
 
             console.err
           } catch (error) {
-            global.loading.err(`${chalk.hex('#ff7100')(`LOADED`)} ${chalk.hex("#FFFF00")(command)} fail ` + error, "COMMAND");
+            console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(command)} failed with error: ${error.message}` + `\n`, "COMMAND");
           }
         }
       })(),
 
       (async () => {
         const events = readdirSync(join(global.client.mainPath, 'modules/events')).filter(ev => ev.endsWith('.js') && !global.config.eventDisabled.includes(ev));
-        console.log(cv(`\n` + `──LOADING EVENTS─●`));
+        console.log(`\n` + `──LOADING EVENTS─●`);
         for (const ev of events) {
           try {
             const event = require(join(global.client.mainPath, 'modules/events', ev));
             const { config, onLoad, run } = event;
             if (!config || !config.name || !run) {
-              global.loading.err(`${chalk.hex('#ff7100')(`LOADED`)} ${chalk.hex("#FFFF00")(ev)} Module is not in the correct format. `, "EVENT");
+              console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(ev)} Module is not in the correct format. `);
               continue;
             }
 
@@ -379,7 +308,7 @@ function onBot() {
             }
 
             if (global.client.events.has(config.name)) {
-              global.loading.err(`${chalk.hex('#ff7100')(`LOADED`)} ${chalk.hex("#FFFF00")(ev)} Module is already loaded!`, "EVENT");
+              console.error(`${chalk.hex("#ff0000")('ERROR!')} ${chalk.hex("#FFFF00")(ev)} Module is already loaded!`);
               continue;
             }
             if (config.dependencies) {
@@ -413,26 +342,26 @@ function onBot() {
               await onLoad(eventData);
             }
             global.client.events.set(config.name, event);
-            global.loading(`${cra(`LOADED`)} ${cb(config.name)} success`, "EVENT");
+            console.log(`LOADED ${config.name} success`);
           }
           catch (err) {
-            global.loading.err(`${chalk.hex("#ff0000")('ERROR!')} ${cb(ev)} failed with error: ${err.message}` + `\n`, "EVENT");
+            console.error(`${chalk.hex("#ff0000")('ERROR!')} ${cb(ev)} failed with error: ${err.message}` + `\n`, "EVENT");
           }
         }
       })();
-    console.log(cv(`\n` + `──BOT START─● `));
-    global.loading(`${cra(`[ SUCCESS ]`)} Loaded ${cb(`${global.client.commands.size}`)} commands and ${cb(`${global.client.events.size}`)} events successfully`, "LOADED");
-    global.loading(`${cra(`[ TIMESTART ]`)} Launch time: ${((Date.now() - global.client.timeStart) / 1000).toFixed()}s`, "LOADED");
+    console.log(`\n` + `──BOT START─● `);
+    console.log(`[ SUCCESS ] Loaded ${`${global.client.commands.size}`} commands and ${`${global.client.events.size}`} events successfully`);
+    console.log(`[ TIMESTART ] Launch time: ${((Date.now() - global.client.timeStart) / 1000).toFixed()}s`);
     const listener = require('./includes/listen')({ api: loginApiData });
     global.custom = require('./custom')({ api: loginApiData });
     global.handleListen = loginApiData.listenMqtt(async (error, message) => {
       if (error) {
         if (error.error === 'Not logged in.') {
-          logger("Your bot account has been logged out!", 'LOGIN');
+          console.log("Your bot account has been logged out!");
           return process.exit(1);
         }
         if (error.error === 'Not logged in') {
-          logger("Your account has been checkpointed, please confirm your account and log in again!", 'CHECKPOINTS');
+          console.log("Your account has been checkpointed, please confirm your account and log in again!");
           return process.exit(0);
         }
         console.log(error);
@@ -445,12 +374,15 @@ function onBot() {
 }
 (async () => {
   try {
-    console.log(cv(`\n` + `──DATABASE─●`));
-    global.loading(`${cra(`[ CONNECT ]`)} Connected to JSON database successfully!`, "DATABASE");
+    console.log(`\n` + `──DATABASE─●`);
+    console.log(`[ CONNECT ] Connected to JSON database successfully!`);
+    console.log(`\n` + `──LOADING COMMANDS─●`);
+    console.log(`LOADED commands and events successfully`);
+    console.log(`[ TIMESTART ] Launch time: ${((Date.now() - global.client.timeStart) / 1000).toFixed()}s`);
     onBot();
-    } catch (error) {
-       global.loading.err(`${cra(`[ CONNECT ]`)} Failed to connect to the JSON database.`, "DATABASE");
-      }
+  } catch (error) {
+    console.error(`[ CONNECT ] Failed to connect to the JSON database.`);
+  }
 })();
 // Call the keepAlive function to start the keep-alive process
 keepAlive();

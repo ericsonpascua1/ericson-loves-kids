@@ -52,4 +52,4 @@ Note: These commands require administrative privileges. Only users specified in 
 
 ## Credits
 
-> Dan is developed by Yan Maglinte and inspired by Simsimi.
+> Dan is developed by Aki Hayakawa and inspired by Simsimi.

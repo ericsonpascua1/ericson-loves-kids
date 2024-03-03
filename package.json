@@ -15,10 +15,10 @@
     "Disme-Bot",
     "usePrefix",
     "D-Jukie",
-    "Yan Maglinte"
+    "Aki Hayakawa"
   ],
   "license": "GPL-3.0",
-  "author": "Yan Maglinte",
+  "author": "Aki Hayakawa",
   "dependencies": {
     "@distube/ytdl-core": "^4.13.3",
     "aes-js": "^3.1.2",

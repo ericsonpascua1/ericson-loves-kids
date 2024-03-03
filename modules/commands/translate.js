@@ -28,7 +28,7 @@ Translate "I love you" into Spanish:
 Translate "Good morning" into German:
 • "<prefix>trans de Good morning"
 
-Modified by Yan Maglinte */
+Modified by Aki Hayakawa */
 
 module.exports.run = async ({ api, event, args }) => {
   const request = global.nodemodule["request"];
