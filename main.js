@@ -9,13 +9,17 @@ function keepAlive() {
       https.get(pingUrl, (response) => {
           if (response.statusCode === 200) {
               totalMinutes++;
-              const hours = Math.floor(totalMinutes / 60);
-              const minutes = totalMinutes % 60;
-              const uptimeText = hours > 0
-                  ? `UPTIME STATUS: ${hours} hour${hours !== 1 ? 's' : ''}${minutes > 0 ? ` and ${minutes} minute${minutes !== 1 ? 's' : ''}` : ''}`
-                  : `UPTIME STATUS: ${totalMinutes} minute${totalMinutes !== 1 ? 's' : ''}`;
+              const days = Math.floor(totalMinutes / 1440); // 1440 minutes in a day
+              const hours = Math.floor((totalMinutes % 1440) / 60); // Remaining minutes converted to hours
+              const minutes = totalMinutes % 60; // Remaining minutes
 
-              console.log(uptimeText);
+              const daysText = days > 0 ? `${days} day${days !== 1 ? 's' : ''}` : '';
+              const hoursText = hours > 0 ? `${hours} hour${hours !== 1 ? 's' : ''}` : '';
+              const minutesText = minutes > 0 ? `${minutes} minute${minutes !== 1 ? 's' : ''}` : '';
+
+              const uptimeText = daysText + (daysText && (hoursText || minutesText) ? ', ' : '') + hoursText + (hoursText && minutesText ? ', ' : '') + minutesText;
+
+              console.log(`UPTIME STATUS: ${uptimeText}`);
           } else {
               console.log(`Received ${response.statusCode} status code. Check your application.`);
           }
