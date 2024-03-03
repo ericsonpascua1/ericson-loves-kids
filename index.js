@@ -5,9 +5,7 @@ const logger = require("./utils/log.js");
 const path = require('path');
 const net = require('net');
  
-const getRandomPort = () => Math.floor(Math.random() * (65535 - 1024) + 1024);
-const PORT = getRandomPort();
-let currentPort = PORT;
+const PORT = process.env.PORT || 3000; // Use Heroku-provided port or default to 3000
  
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/includes/login/cover/index.html'));
@@ -40,6 +38,7 @@ function startServer(port) {
 async function startBot(index) {
   logger(`Getting Started!`, "STARTER");
   try {
+    let currentPort = PORT; // Initialize current port with the default or Heroku-provided port
     const isAvailable = await isPortAvailable(currentPort);
     if (!isAvailable) {
       const newPort = getRandomPort();
