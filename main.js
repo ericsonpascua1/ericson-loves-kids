@@ -1,34 +1,28 @@
 const https = require('https');
 
-// Replace with your Replit application's URL
-var username = process.env.REPL_OWNER
-const replitAppUrl = `https://${process.env.REPL_SLUG}.${username}.repl.co`;
+const pingUrl = `https://akihayakawa-bot-9751277c256d.herokuapp.com`;
 
 let totalMinutes = 0;
 
-// ANSI escape code for neon green color
-const neonYellow = '\x1b[33m';
-const resetColor = '\x1b[0m';
-
 function keepAlive() {
-    setInterval(() => {
-        https.get(replitAppUrl, (response) => {
-            if (response.statusCode === 200) {
-                totalMinutes++;
-                const hours = Math.floor(totalMinutes / 60);
-                const minutes = totalMinutes % 60;
-                const uptimeText = hours > 0
-                    ? `UPTIME STATUS: ${hours} hour${hours !== 1 ? 's' : ''}${minutes > 0 ? ` and ${minutes} minute${minutes !== 1 ? 's' : ''}` : ''}`
-                    : `UPTIME STATUS: ${totalMinutes} minute${totalMinutes !== 1 ? 's' : ''}`;
+  setInterval(() => {
+      https.get(pingUrl, (response) => {
+          if (response.statusCode === 200) {
+              totalMinutes++;
+              const hours = Math.floor(totalMinutes / 60);
+              const minutes = totalMinutes % 60;
+              const uptimeText = hours > 0
+                  ? `UPTIME STATUS: ${hours} hour${hours !== 1 ? 's' : ''}${minutes > 0 ? ` and ${minutes} minute${minutes !== 1 ? 's' : ''}` : ''}`
+                  : `UPTIME STATUS: ${totalMinutes} minute${totalMinutes !== 1 ? 's' : ''}`;
 
-                console.log(neonYellow + uptimeText + resetColor);
-            } else {
-                console.log(`Received ${response.statusCode} status code. Check your application.`);
-            }
-        }).on('error', (error) => {
-            console.error(`An error occurred: ${error.message}`);
-        });
-    }, 60000); // Send a request every 1 minute
+              console.log(uptimeText);
+          } else {
+              console.log(`Received ${response.statusCode} status code. Check your application.`);
+          }
+      }).on('error', (error) => {
+          console.error(`An error occurred: ${error.message}`);
+      });
+  }, 60000); // Send a request every 1 minute
 }
 
 // Main application logic here
