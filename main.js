@@ -1,6 +1,6 @@
 const https = require('https');
 
-const pingUrl = `https://akihayakawa-bot-2ce81e53041b.herokuapp.com/`;
+const pingUrl = process.env.HEROKU_URL;
 
 let totalMinutes = 0;
 
