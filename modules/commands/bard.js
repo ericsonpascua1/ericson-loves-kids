@@ -52,7 +52,7 @@ module.exports.handleEvent = async function ({ api, event }) {
 
   const inputText = args.join(' ');
 
-  if (!inputText) {
+  if (!inputText && (!event.messageReply.attachments[0] || event.messageReply.attachments[0].type !== "photo")) {
     return api.sendMessage("Hello, I'm Gemini Pro Vision by Ronnel. How may I help you?", event.threadID, event.messageID);
   }
 
