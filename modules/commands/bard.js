@@ -68,7 +68,7 @@ module.exports.handleEvent = async function ({ api, event }) {
     return;
   }
 
-  // api.sendMessage("Gemini P-Vision AI is Thinking...", event.threadID, event.messageID);
+  api.sendMessage("Generating response ✅", event.threadID, event.messageID);
 
   try {
     const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}`);
