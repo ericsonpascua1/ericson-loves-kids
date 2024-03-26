@@ -30,8 +30,8 @@ module.exports.handleEvent = async function({
   } else if (event.messageReply && event.messageReply.senderID == api.getCurrentUserID()) {
       try {
           const encodedUserChat = encodeURIComponent(userChat);
-          // const akiResponse = (await axios.get(`https://nguyen-chard-api.joshuag06.repl.co/api/sim/simv3?type=ask&ask=${encodedUserChat}`)).data.answer;
-          const akiResponse = (await axios.get(`https://simsimi.fun/api/v2/?mode=talk&lang=ph&message=${encodedUserChat}&filter=false`)).data.success;
+        //   const akiResponse = (await axios.get(`https://simsimi.fun/api/v2/?mode=talk&lang=ph&message=${encodedUserChat}&filter=false`)).data.success;
+          const akiResponse = (await axios.get(`http://fi1.bot-hosting.net:6378/sim?query=${encodedUserChat}`)).data.respond;
           api.sendMessage(akiResponse, event.threadID, event.messageID);
       } catch (err) {
           console.error("Error:", err);
