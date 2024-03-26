@@ -2,7 +2,7 @@ const axios = require("axios");
 let fontEnabled = true;
 
 module.exports.config = {
-  name: "bardv",
+  name: "bard",
   version: "1",
   usePrefix: true,
   hasPermission: 0,
