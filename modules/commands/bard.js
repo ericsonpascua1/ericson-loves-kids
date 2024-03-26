@@ -22,7 +22,7 @@ async function convertImageToCaption(imageURL, api, event, inputText) {
 
     if (caption) {
       const formattedCaption = formatFont(caption);
-      api.sendMessage(`Query: '${inputText}'\n\n${formattedCaption}`, event.threadID, event.messageID);
+      api.sendMessage(`${formattedCaption}`, event.threadID, event.messageID);
     } else {
       api.sendMessage("Failed to recognize image.", event.threadID, event.messageID);
     }
@@ -53,7 +53,7 @@ module.exports.handleEvent = async function ({ api, event }) {
   const inputText = args.join(' ');
 
   if (!inputText) {
-    return api.sendMessage("Hello, I'm Gemini Pro Vision. How may I help you?", event.threadID, event.messageID);
+    return api.sendMessage("Hello, I'm Gemini Pro Vision by Ronnel. How may I help you?", event.threadID, event.messageID);
   }
 
   if (args[0] === "on") {
@@ -68,13 +68,13 @@ module.exports.handleEvent = async function ({ api, event }) {
     return;
   }
 
-  api.sendMessage("Gemini P-Vision AI is Thinking...", event.threadID, event.messageID);
+  // api.sendMessage("Gemini P-Vision AI is Thinking...", event.threadID, event.messageID);
 
   try {
     const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}`);
     if (response.status === 200 && response.data.response) {
     const formattedResponse = formatFont(response.data.response);
-      api.sendMessage(`Query: '${inputText}'\n\n${formattedResponse}`, event.threadID, event.messageID);
+      api.sendMessage(`${formattedResponse}`, event.threadID, event.messageID);
     } else {
       console.error("Error generating response from API");
     }
