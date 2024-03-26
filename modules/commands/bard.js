@@ -33,7 +33,7 @@ async function convertImageToCaption(imageURL, api, event, inputText) {
 }
 
 module.exports.handleEvent = async function ({ api, event }) {
-  if (!(event.body.toLowerCase().startsWith("gemini"))) return;
+  if (!(event.body.toLowerCase().startsWith("bard"))) return;
 
   const args = event.body.split(/\s+/);
   args.shift();
