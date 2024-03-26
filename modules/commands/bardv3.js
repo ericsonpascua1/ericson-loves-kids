@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require("fs");
 
 module.exports.config = {
-  name: "bardv2",
+  name: "bardv3",
   version: "1.0.0",
   hasPermssion: 0,
   credits: "Aki Hayakawa",
