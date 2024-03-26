@@ -2,92 +2,137 @@ const axios = require("axios");
 const fs = require("fs");
 
 module.exports.config = {
-  name: "bardv2",
-  version: "1.0.0",
-  hasPermssion: 0,
-  credits: "Aki Hayakawa",
-  description: "BardAPI with Image recognition!",
-  usePrefix: true,
-  commandCategory: "tools",
-  usages: "",
-  cooldowns: 0,
+    name: "bard",
+    version: "1",
+    usePrefix: true,
+    hasPermission: 0,
+    credits: "Aki Hayakawa",
+    description: "Search using Bard",
+    commandCategory: "ai",
+    usages: "<ask>",
+    cooldowns: 5,
 };
 
-module.exports.run = async function ({ api, event, args }) {
-  try {
-    let prompt = args.join(" ");
-    let credits = this.config.credits;
-    let imageUrl;
+module.exports.run = async function ({
+    api,
+    event
+}) {
+    const {
+        threadID,
+        messageID,
+        type,
+        messageReply,
+        body
+    } = event;
 
-    if (event && event.type === "message_reply" && event.messageReply && !event.messageReply.attachments) {
-      // If it's a message_reply and there are no attachments, use the body as prompt
-      prompt = event.messageReply.body;
-    } else if (!prompt) {
-      // If there's no prompt and no message_reply, return a default message
-      const message = "Hello, I'm Bard created by Aki. How can I help you?";
-      return api.sendMessage(message, event.threadID, event.messageID);
-    }
+    let question = "";
+    if (type === "message_reply" && messageReply.attachments[0]?.type === "photo") {
+        const attachment = messageReply.attachments[0];
+        const imageURL = attachment.url;
+        question = await convertImageToText(imageURL);
 
-    if (event && event.type === "message_reply" && event.messageReply && event.messageReply.attachments) {
-      const attachment = event.messageReply.attachments[0];
-      if (attachment.type === "photo" || attachment.type === "audio") {
-        imageUrl = attachment.url;
-      }
-    }
-
-    api.sendMessage("Generating response ✅", event.threadID, event.messageID);
-
-    const res = await axios.post("https://bardv2.yootyub.repl.co/", {
-      message: prompt,
-      credits: credits,
-      image_url: imageUrl,
-    });
-
-    let response = res.data.message;
-    response = response
-      .replace(/\n\[Image of .*?\]|(\*\*)/g, "")
-      .replace(/^\*/gm, "•");
-
-    const imageUrls = res.data.imageUrls;
-    if (Array.isArray(imageUrls) && imageUrls.length > 0) {
-      const attachments = [];
-
-      if (!fs.existsSync("cache")) {
-        fs.mkdirSync("cache");
-      }
-
-      for (let i = 0; i < imageUrls.length; i++) {
-        const url = imageUrls[i];
-        const imagePath = `cache/image${i + 1}.png`;
-
-        try {
-          const imageResponse = await axios.get(url, {
-            responseType: "arraybuffer",
-          });
-          fs.writeFileSync(imagePath, imageResponse.data);
-          attachments.push(fs.createReadStream(imagePath));
-        } catch (error) {
-          console.error(
-            "Error occurred while downloading and saving the image:",
-            error
-          );
+        if (!question) {
+            api.sendMessage(
+                "Failed to convert the photo to text. Please try again with a clearer photo.",
+                threadID,
+                messageID
+            );
+            return;
         }
-      }
-
-      api.sendMessage(
-        {
-          attachment: attachments,
-          body: response,
-        },
-        event.threadID,
-        event.messageID
-      );
+    } else if (type === "message_reply") {
+        question = event.messageReply.body;
     } else {
-      api.sendMessage(response, event.threadID, event.messageID);
+        question = body.slice(5).trim();
+
+        if (!question) {
+            api.sendMessage("Please provide a question or query", threadID, messageID);
+            return;
+        }
     }
-  } catch (error) {
-    console.error("Error:", error);
-    api.sendMessage(`Error: ${error}`, event.threadID, event.messageID);
-    api.setMessageReaction("👎", event.messageID, () => {}, true);
-  }
+
+    api.sendMessage("Generating response ✅", threadID, messageID);
+
+    const akiUrl = `https://ask-aki.yootyub.repl.co/bard/${encodeURIComponent(question)}`;
+
+    async function fetchData() {
+        try {
+            axios.get(akiUrl)
+                .then(async (res) => {
+                    if (/Response Error/i.test(res.data.content)) {
+                        // Do something when the content contains "Response Error" (case-insensitive)
+                        return fetchData();
+                    } else {
+                        // Do something else when it doesn't contain "Response Error"
+                        let respond = res.data.content;
+                        const imageUrls = res.data.images;
+                        // Remove [Image of *any text here* ] from the response
+                        respond = respond.replace(/\n\[Image of .*?\]|(\*\*)/g, '').replace(/^\*/gm, '•');
+                        if (Array.isArray(imageUrls) && imageUrls.length > 0) {
+                            const attachments = [];
+
+                            if (!fs.existsSync("cache")) {
+                                fs.mkdirSync("cache");
+                            }
+
+                            for (let i = 0; i < imageUrls.length; i++) {
+                                const url = imageUrls[i];
+                                const imagePath = `cache/image${i + 1}.png`;
+
+                                try {
+                                    const imageResponse = await axios.get(url, {
+                                        responseType: "arraybuffer"
+                                    });
+                                    fs.writeFileSync(imagePath, imageResponse.data);
+
+                                    attachments.push(fs.createReadStream(imagePath));
+                                } catch (error) {
+                                    console.error("Error occurred while downloading and saving the image:", error);
+                                }
+                            }
+                            return api.sendMessage({
+                                attachment: attachments,
+                                body: respond,
+                            },
+                                threadID, () => {
+                                    const folderPath = 'cache';
+                                    fs.readdir(folderPath, (err, files) => {
+                                        if (err) {
+                                            console.error('Error reading folder:', err);
+                                            return;
+                                        }
+
+                                        files.forEach((file) => {
+                                            const filePath = `${folderPath}/${file}`;
+
+                                            fs.unlink(filePath, (err) => {
+                                                if (err) {
+                                                    console.error(`Error deleting file ${filePath}:`, err);
+                                                } else {
+                                                    console.log(`Deleted file: ${filePath}`);
+                                                }
+                                            });
+                                        });
+                                    });
+                                },
+                                messageID);
+                        } else {
+                            return api.sendMessage(respond, threadID, messageID);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    return api.sendMessage('Something wrong with your question', event.threadID, event.messageID);
+                });
+        } catch (error) {
+            console.error("Error occurred:", error);
+        }
+    }
+    fetchData()
 };
+
+async function convertImageToText(imageURL) {
+    // const response = await axios.get(`https://sensui-useless-apis.codersensui.repl.co/api/tools/ocr?imageUrl=${encodeURIComponent(imageURL)}`);
+    // return response.data.text;
+    const response = await axios.get(`https://api.ocr.space/parse/imageurl?apikey=K88477135488957&OCREngine=3&url=${encodeURIComponent(imageURL)}`);
+    return response.data.ParsedResults[0].ParsedText;
+  }
