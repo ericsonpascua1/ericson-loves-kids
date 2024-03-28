@@ -137,9 +137,7 @@ async function convertImageToCaption(imageURL, api, event, inputText) {
 }
 
 module.exports.handleEvent = async function ({ api, event }) {
-  const prefix = global.config.usePrefix ? global.config.PREFIX : '';
-  const commandName = global.config.name.toLowerCase();
-  if (!(event.body.toLowerCase().startsWith(`${prefix}${commandName}`))) return;
+  if (!(event.body.toLowerCase().startsWith(`${global.config.PREFIX}ai`))) return;
 
   const args = event.body.split(/\s+/);
   args.shift();
