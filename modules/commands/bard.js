@@ -74,6 +74,7 @@ module.exports.handleEvent = async function ({ api, event }) {
     const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}`);
     if (response.status === 200 && response.data.response) {
     const formattedResponse = formatFont(response.data.response);
+      formattedResponse = formattedResponse.replace(/\n\[Image of .*?\]|(\*\*)/g, '').replace(/^\*/gm, '•');
       api.sendMessage(`${formattedResponse}`, event.threadID, event.messageID);
     } else {
       console.error("Error generating response from API");
