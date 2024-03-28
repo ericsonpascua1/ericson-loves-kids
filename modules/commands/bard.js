@@ -73,15 +73,15 @@ module.exports.handleEvent = async function ({ api, event }) {
   try {
     const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}`);
     if (response.status === 200 && response.data.response) {
-    const formattedResponse = formatFont(response.data.response);
-      formattedResponse = formattedResponse.replace(/\n\[Image of .*?\]|(\*\*)/g, '').replace(/^\*/gm, '•');
-      api.sendMessage(`${formattedResponse}`, event.threadID, event.messageID);
+        let formattedResponse = formatFont(response.data.response);
+        formattedResponse = formattedResponse.replace(/\n\[Image of .*?\]|(\*\*)/g, '').replace(/^\*/gm, '•');
+        api.sendMessage(`${formattedResponse}`, event.threadID, event.messageID);
     } else {
-      console.error("Error generating response from API");
+        console.error("Error generating response from API");
     }
   } catch (error) {
-    console.error("Error:", error);
-    api.sendMessage("An error occured while processing Gemini API", event.threadID, event.messageID);
+      console.error("Error:", error);
+      api.sendMessage("An error occured while processing Gemini API", event.threadID, event.messageID);
   }
 };
 
