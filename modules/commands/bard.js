@@ -15,7 +15,7 @@ module.exports.config = {
 
 async function convertImageToCaption(imageURL, api, event, inputText) {
   try {
-    api.sendMessage("✅ Recognizing image. Please wait", event.threadID, event.messageID);
+    api.sendMessage("Generating response ✅", event.threadID, event.messageID);
 
     const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}&image_url=${encodeURIComponent(imageURL)}`);
     const caption = response.data.response;
