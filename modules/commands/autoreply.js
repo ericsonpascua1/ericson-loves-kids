@@ -31,7 +31,8 @@ module.exports.handleEvent = async function({
       try {
           const encodedUserChat = encodeURIComponent(userChat);
         //   const akiResponse = (await axios.get(`https://simsimi.fun/api/v2/?mode=talk&lang=ph&message=${encodedUserChat}&filter=false`)).data.success;
-          const akiResponse = (await axios.get(`http://fi1.bot-hosting.net:6378/sim?query=${encodedUserChat}`)).data.respond;
+          // const akiResponse = (await axios.get(`http://fi1.bot-hosting.net:6378/sim?query=${encodedUserChat}`)).data.respond;
+          const akiResponse = (await axios.get(`https://azeu-api-beta.onrender.com/SimSimiChat?message=${encodedUserChat}`)).data.Reply;
           api.sendMessage(akiResponse, event.threadID, event.messageID);
       } catch (err) {
           console.error("Error:", err);
