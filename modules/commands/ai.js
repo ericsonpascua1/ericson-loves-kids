@@ -121,7 +121,7 @@ async function convertImageToCaption(imageURL, api, event, inputText) {
   try {
     api.sendMessage("Generating response ✅", event.threadID, event.messageID);
 
-    const response = await axios.get(`https://hazee-gemini-pro-vision-12174af6c652.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}&image_url=${encodeURIComponent(imageURL)}`);
+    const response = await axios.get(`https://hazee-gemini-vision-2208f399781c.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}&image_url=${encodeURIComponent(imageURL)}`);
     const caption = response.data.response;
 
     if (caption) {
