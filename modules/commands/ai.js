@@ -121,7 +121,7 @@ async function convertImageToCaption(imageURL, api, event, inputText) {
   try {
     api.sendMessage("Generating response ✅", event.threadID, event.messageID);
 
-    const response = await axios.get(`https://hazee-gemini-vision-2208f399781c.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}&image_url=${encodeURIComponent(imageURL)}`);
+    const response = await axios.get(`https://aki-gemini-pro-vision.vercel.app/gemini?prompt=${encodeURIComponent(inputText)}&url=${encodeURIComponent(imageURL)}`);
     const caption = response.data.response;
 
     if (caption) {
@@ -175,7 +175,8 @@ module.exports.handleEvent = async function ({ api, event }) {
   api.sendMessage("Generating response ✅", event.threadID, event.messageID);
 
   try {
-    const response = await axios.get(`https://hazee-gemini-vision-2208f399781c.herokuapp.com/gemini-vision?text=${encodeURIComponent(inputText)}`);
+    var uid = event.senderID;
+    const response = await axios.get(`https://aki-gemini-conversational-ddff6113969d.herokuapp.com/gemini?prompt=${encodeURIComponent(inputText)}&uid=${uid}`);
     if (response.status === 200 && response.data.response) {
         let formattedResponse = formatFont(response.data.response);
         formattedResponse = formattedResponse.replace(/\n\[Image of .*?\]|(\*\*)/g, '').replace(/^\*/gm, '•');
