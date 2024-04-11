@@ -17,9 +17,12 @@ const axios = require('axios');
 module.exports.run = async function({ api, args, event }) {
 
 	try {
-		// const get = (await axios.get(`https://asuna.ga/api/kiss/`)).data;
-		// const link = get.url;
-		const download = await axios.get(`https://api.zahwazein.xyz/api/anime/sfw/kiss?apikey=zenzkey_1ec92f71d3bb`, {
+		const get = (await axios.get(`https://asuna.ga/api/kiss/`)).data;
+		const link = get.url;
+		// const download = await axios.get(`https://api.zahwazein.xyz/api/anime/sfw/kiss?apikey=zenzkey_1ec92f71d3bb`, {
+		// 	responseType: 'arraybuffer'
+		// });
+		const download = await axios.get(link, {
 			responseType: 'arraybuffer'
 		});
 		const kissPath = path.join(__dirname, 'cache', `kiss.gif`);
