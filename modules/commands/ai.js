@@ -186,7 +186,7 @@ module.exports.handleEvent = async function ({ api, event }) {
     }
   } catch (error) {
       console.error("Error:", error);
-      api.sendMessage("An error occured while processing Gemini API", event.threadID, event.messageID);
+      api.sendMessage("An error occured while processing response", event.threadID, event.messageID);
   }
 };
 
