@@ -412,11 +412,11 @@ try {
     const axios = require('axios');
     var uid = event.senderID;
     const query = args.join(' ');
+    api.sendMessage(`Generating response ✅`, event.threadID, event.messageID);
     if(!query){
       return api.sendMessage(`Hello, I'm GPT-4 By Ronnel. How may I help you`, event.threadID, event.messageID);
     }
     const querylink = await axios.get(`https://deku-rest-api.replit.app/gpt4?prompt=${encodeURIComponent(query)}&uid=${uid}`);
-    api.sendMessage(`Generating response ✅`, event.threadID, event.messageID);
     const result = querylink.data.gpt4;
     return api.sendMessage(result, event.threadID, event.messageID);
 } catch (error) {
