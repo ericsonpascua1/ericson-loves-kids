@@ -406,7 +406,7 @@ module.exports.config = {
   cooldowns: 5,
 };
 
-module.exports.run = async function({ api, event }) {
+module.exports.run = async function({ api, event, args }) {
 
 try {
     const axios = require('axios');
