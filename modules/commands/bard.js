@@ -417,7 +417,7 @@ try {
     }
     const querylink = await axios.get(`https://deku-rest-api.replit.app/gpt4?prompt=${encodeURIComponent(query)}&uid=${uid}`);
     api.sendMessage(`Generating response ✅`, event.threadID, event.messageID);
-    const result = querylink.data.gp4;
+    const result = querylink.data.gpt4;
     return api.sendMessage(result, event.threadID, event.messageID);
 } catch (error) {
     return api.sendMessage(`Something went wrong`, event.threadID, event.messageID);  
