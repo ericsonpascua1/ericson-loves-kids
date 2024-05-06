@@ -416,8 +416,10 @@ try {
     if(!query){
       return api.sendMessage(`Hello, I'm GPT-4 By Ronnel. How may I help you`, event.threadID, event.messageID);
     }
-    const querylink = await axios.get(`https://deku-rest-api.replit.app/gpt4?prompt=${encodeURIComponent(query)}&uid=${uid}`);
-    const result = querylink.data.gpt4;
+    // const querylink = await axios.get(`https://deku-rest-api.replit.app/gpt4?prompt=${encodeURIComponent(query)}&uid=${uid}`);
+    const querylink = await axios.get(`https://hashier-api-globalgpt.vercel.app/api/globalgpt?q=${encodeURIComponent(query)}`);
+    // const result = querylink.data.gpt4;
+    const result = querylink.data.content;
     return api.sendMessage(result, event.threadID, event.messageID);
 } catch (error) {
     return api.sendMessage(`Something went wrong`, event.threadID, event.messageID);  
