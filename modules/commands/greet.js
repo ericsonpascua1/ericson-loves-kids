@@ -3,7 +3,7 @@ module.exports.config = {
     author: "ericson終.",
     version: "1.0.0",
     hasPermission: 0,
-    credits: "Aki Hayakawa",
+    credits: "ericson終.",
     description: "Bot automatic greetings",
     usePrefix: true,
     commandCategory: "No Prefix",
