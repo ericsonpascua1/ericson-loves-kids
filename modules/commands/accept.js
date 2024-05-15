@@ -2,7 +2,7 @@ module.exports.config = {
     name: "accept",
     version: "1.0.1",
     hasPermssion: 2,
-    credits: "Aki Hayakawa",
+    credits: "ericson終.",
     description: "Accept/Decline Incoming Bot Friend Requests",
     usePrefix: true,
     commandCategory: "system",
