@@ -4,7 +4,7 @@ module.exports.config = {
   hasPermssion: 0,
   credits: "ericson終.",
   description: "Play a song",
-  usePrefix: false,
+  usePrefix: true,
   commandCategory: "media",
   usages: "[title]",
   cooldowns: 10,
