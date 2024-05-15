@@ -15,10 +15,10 @@
     "Disme-Bot",
     "usePrefix",
     "D-Jukie",
-    "Aki Hayakawa"
+    "ericson pascua"
   ],
   "license": "GPL-3.0",
-  "author": "Aki Hayakawa",
+  "author": "ericson pascua",
   "dependencies": {
     "@distube/ytdl-core": "^4.13.3",
     "aes-js": "^3.1.2",
