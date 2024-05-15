@@ -6,7 +6,7 @@ module.exports.config = {
 		description: "Talk to sim",
 		commandCategory: "sim",
 		usages: "[ask]",
-		usePrefix: false,
+		usePrefix: true,
 		cooldowns: 5,
 };
 
