@@ -1,6 +1,6 @@
 module.exports.config = {
     name: "greet",
-    author: "Aki Hayakawa",
+    author: "ericson終.",
     version: "1.0.0",
     hasPermission: 0,
     credits: "Aki Hayakawa",
@@ -29,11 +29,7 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "hi", "hello", "helo", "hilo", "hola", "ola", "sup", "yo", "heyo",
-            "konnichiwa", "kamusta", "musta", "zup", "guys", "konichiwa", "hillo",
-            "hilo", "hey", "👋", "morning", "wazup", "wazzup", "wasup", "wassup",
-            "minna", "eve", "noon", "evening", "buntag", "udto", "hapon", "gabi",
-            "umaga", "tanghali", "gabie"
+            "ericson"
         ];
 
         if (greetings.includes(userChat)) {
@@ -42,14 +38,14 @@ module.exports.handleEvent = async function({
                 const userName = userInfo[event.senderID]?.name || "there";
 
                 api.sendMessage({
-                        body: `Hello, ${userName}. Musta ka?`,
+                        body: `Hello, ${userName}. kamusta ka?`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`Hello, ${userName}. Musta ka?`, event.threadID, event.messageID);
+                            api.sendMessage(`Hello, ${userName}. kamusta ka?`, event.threadID, event.messageID);
                         }
                     }
                 );
@@ -83,14 +79,14 @@ module.exports.handleEvent = async function({
                 let userName = getFirstName(userName1);
 
                 api.sendMessage({
-                        body: `Ano tangina mo ${userName}`,
+                        body: `ano putangina mo ${userName}`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`Ano tangina mo ${userName}`, event.threadID, event.messageID);
+                            api.sendMessage(`ano putangina mo ${userName}`, event.threadID, event.messageID);
                         }
                     }
                 );
