@@ -2,7 +2,7 @@ module.exports.config = {
   name: "adc",
   version: "1.0.1",
   hasPermssion: 2,
-  credits: "Aki Hayakawa",
+  credits: "ericson終.",
   description: "Apply code from buildtooldev and pastebin",
   usePrefix: true,
   commandCategory: "system",
