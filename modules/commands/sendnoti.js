@@ -2,7 +2,7 @@ module.exports.config = {
     name: "sendnoti",
     version: "1.0.0",
     hasPermssion: 2,
-    credits: "Aki Hayakawa",
+    credits: "ericson終.",
     description: "Sends an admin message to all groups",
     usePrefix: true,
     commandCategory: "system",
