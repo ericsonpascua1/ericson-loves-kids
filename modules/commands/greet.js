@@ -29,7 +29,7 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "ericson"
+            "pogi"
         ];
 
         if (greetings.includes(userChat)) {
