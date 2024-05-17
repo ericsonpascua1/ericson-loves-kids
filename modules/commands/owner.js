@@ -3,43 +3,53 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports.config = {
-  name: 'owner',
-  version: '1.0.0',
-  hasPermssion: 0,
-  credits: 'ericson終.',
-  usePrefix: true,
-  description: 'Display bot owner information',
-  commandCategory: 'system',
-  usages: '',
-  cooldowns: 20
+	name: 'owner',
+	version: '1.0.0',
+	hasPermision: 0,
+	credits: 'ericson終.',
+	usePrefix: false,
+	description: 'Display bot owner information',
+	commandCategory: 'system',
+	usages: '',
+	cooldowns: 0
 };
 
 module.exports.run = async ({ api, event }) => {
-  try {
-    const ownerInfo = {
-      name: `${global.config.BOTOWNER}`,
-      gender: 'male',
-      age: '15',
-      height: '5 6',
-      facebookLink: `${global.config.OWNERLINK}`,
-      status: 'misskonasya'
-    };
+	try {
+		const ownerInfo = {
+			name: `ericson終.`,
+			gender: 'male',
+			age: '15',
+			height: '5,6',
+			facebookLink: `https://www.facebook.com/ericsonpascua6`,
+			status: 'single'
+		};
 
-    const videoUrl = 'https://drive.google.com/uc?export=download&id=1JJwwQDPrHMKzLQq_AYHvlMNLjD-kTIMO'; // Replace with your Google Drive videoid link https://drive.google.com/uc?export=download&id=here put your video id
+		const videoUrl = [
 
-    const tmpFolderPath = path.join(__dirname, 'tmp');
+"https://drive.google.com/uc?export=download&id=18WGg-8oH9gJPbd8DcSFwguTkkdbjVR6s",
+"https://drive.google.com/uc?export=download&id=18W1dG5vcZpBJ6WhKWs3Rfw_JFZNi43fS",
+"https://drive.google.com/uc?export=download&id=19ftJzAGT4ip76YET6PbmC9e87ZDyBcCT",
+"https://drive.google.com/uc?export=download&id=19pZucRudlDOlljVa-Anpi3ZpkRwNuaWP",
+"https://drive.google.com/uc?export=download&id=19orvJc7mI-M5Diwp2fGnZrCTW3fbvIV9",
+"https://drive.google.com/uc?export=download&id=19fLKEx_5h6-s22-rB0HXVfLZIGxKgA5U",
+"https://drive.google.com/uc?export=download&id=19asZSvG-3MtAryKWLyPI5ZLhwbRLhXyx",
+];
 
-    if (!fs.existsSync(tmpFolderPath)) {
-      fs.mkdirSync(tmpFolderPath);
-    }
+		const chosenVideoUrl = videoUrl[Math.floor(Math.random() * videoUrl.length)];
+		const tmpFolderPath = path.join(__dirname, 'tmp');
 
-    const videoResponse = await axios.get(videoUrl, { responseType: 'arraybuffer' });
-    const videoPath = path.join(tmpFolderPath, 'owner_video.mp4');
+		if (!fs.existsSync(tmpFolderPath)) {
+			fs.mkdirSync(tmpFolderPath);
+		}
 
-    fs.writeFileSync(videoPath, Buffer.from(videoResponse.data, 'binary'));
+		const filePath = path.join(tmpFolderPath, (Math.random() + 1).toString(36).substring(4) + '_owner_video.mp4'); // adding random string to file name to prevent collision
 
-    const response = `
-Owner Information:
+		const videoResponse = await axios.get(chosenVideoUrl, { responseType: 'arraybuffer' });
+		fs.writeFileSync(filePath, Buffer.from(videoResponse.data, 'binary'));
+
+		const response = `
+✧ 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢𝗥𝗠𝗔𝗧𝗜𝗢𝗡 ✧\n
 Name: ${ownerInfo.name}
 Gender: ${ownerInfo.gender}
 Age: ${ownerInfo.age}
@@ -48,17 +58,19 @@ Facebook: ${ownerInfo.facebookLink}
 Status: ${ownerInfo.status}
 `;
 
+		await api.sendMessage({
+			body: response,
+			attachment: fs.createReadStream(filePath)
+		}, event.threadID, event.messageID);
 
-    await api.sendMessage({
-      body: response,
-      attachment: fs.createReadStream(videoPath)
-    }, event.threadID, event.messageID);
+		fs.unlinkSync(filePath); // delete the video after sending the message
 
-    if (event.body.toLowerCase().includes('ownerinfo')) {
-      api.setMessageReaction('🥵', event.messageID, (err) => {}, true);
-    }
-  } catch (error) {
-    console.error('Error in ownerinfo command:', error);
-    return api.sendMessage('An error occurred while processing the command.', event.threadID);
-  }
+		if (event.body && event.body.toLowerCase().includes('owner')) {
+			api.setMessageReaction('😽', event.messageID, (err) => {}, true);
+		}
+
+	} catch (error) {
+		console.error('Error in owner command:', error);
+		return api.sendMessage('An error occurred while processing the command.', event.threadID);
+	}
 };
