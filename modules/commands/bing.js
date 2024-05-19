@@ -11,7 +11,7 @@ module.exports.config = {
 	  cooldowns: 5,
 	  credits: "ericson",
 	  usages: "[query]",
-		usePrefix: false,
+		usePrefix: true,
 		hasPermission: 0
 };
 
