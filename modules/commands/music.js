@@ -1,10 +1,10 @@
 module.exports.config = {
-  name: "music2",
+  name: "music",
   version: "2.0.4",
   hasPermssion: 0,
   credits: "ericson",
   description: "Play a song",
-  usePrefix: false,
+  usePrefix: true,
   commandCategory: "media",
   usages: "[title]",
   cooldowns: 10,
