@@ -3,7 +3,7 @@ module.exports.config = {
 	role: 0,
 	credits: "ericson",
 	description: "Talk to Gemini (conversational)",
-	hasPrefix: true,
+	hasPrefix: false,
 	commandCategory: "ai",
 	usePrefix:false,
 	hasPermission:0,
