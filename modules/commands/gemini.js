@@ -1,40 +1,46 @@
-module.exports.config = {
-	name: "gemini",
-	role: 0,
-	credits: "ericson",
-	description: "Talk to Gemini (conversational)",
-	hasPrefix: false,
-	commandCategory: "ai",
-	usePrefix:false,
-	hasPermission:0,
-	version: "5.6.7",
-	cooldown: 5,
-	aliases: ["Gemini"],
-	usage: "gemini [prompt]"
+const axios = require('axios');
+
+module.exports["config"] = {
+  name: "gemini",
+  version: "1.0.0",
+  credits: "Google",
+  hasPermission: 0,
+  commandCategory: "Ai-Chat",
+  usage: "[ prefix ]gemini [prompt]",
+  usePrefix: true,
+  cooldowns: 0
 };
 
-module.exports.run = async function ({ api, event, args }) {
-	const axios = require("axios");
-	let prompt = args.join(" "),
-		uid = event.senderID,
-		url;
-	if (!prompt) return api.sendMessage(`Please enter a prompt.`, event.threadID);
-	api.sendTypingIndicator(event.threadID);
-	try {
-		const geminiApi = `https://69070.replit.app/gemini`;
-		if (event.type == "message_reply") {
-			if (event.messageReply.attachments[0]?.type == "photo") {
-				url = encodeURIComponent(event.messageReply.attachments[0].url);
-				const res = (await axios.get(`${geminiApi}?prompt=${encodeURIComponent(prompt)}`)).data;
-				return api.sendMessage(res.success, event.threadID);
-			} else {
-				return api.sendMessage('Please reply to an image.', event.threadID);
-			}
-		}
-		const response = (await axios.get(`${geminiApi}?prompt=${encodeURIComponent(prompt)}`)).data;
-		return api.sendMessage(response.success, event.threadID);
-	} catch (error) {
-		console.error(error);
-		return api.sendMessage('❌ | An error occurred. You can try typing your query again or resending it. There might be an issue with the server that\'s causing the problem, and it might resolve on retrying.', event.threadID);
-	}
+module.exports["run"] = async ({ api, event, args, Users }) => {
+  try {
+    const query = args.join(" ") || "hello";
+    const { name } = await Users.getData(event.senderID);
+
+    if (query) {
+      api.setMessageReaction("⏳", event.messageID, (err) => console.log(err), true);
+      const processingMessage = await api.sendMessage(
+        `Asking Gemini. Please wait a moment...`,
+        event.threadID
+      );
+
+      const apiUrl = `https://liaspark.chatbotcommunity.ltd/@hercai/api/gemini?userName=${encodeURIComponent(name)}&key=j86bwkwo-8hako-12C&query=${encodeURIComponent(query)}`;
+      const response = await axios.get(apiUrl);
+
+      if (response.data && response.data.message) {
+        const trimmedMessage = response.data.message.trim();
+        api.setMessageReaction("✅", event.messageID, (err) => console.log(err), true);
+        await api.sendMessage({ body: trimmedMessage }, event.threadID, event.messageID);
+
+        console.log(`Sent Gemini's response to the user`);
+      } else {
+        throw new Error(`Invalid or missing response from Gemini API`);
+      }
+
+      await api.unsendMessage(processingMessage.messageID);
+    }
+  } catch (error) {
+    console.error(`❌ | Failed to get Gemini's response: ${error.message}`);
+    const errorMessage = `❌ | An error occurred. You can try typing your query again or resending it. There might be an issue with the server that's causing the problem, and it might resolve on retrying.`;
+    api.sendMessage(errorMessage, event.threadID);
+  }
 };
