@@ -6,7 +6,7 @@ module.exports.config = {
 	description: "Automatically accept friend requests",
 	commandCategory: "system",
 	usages: "[on/off]",
-	usePrefix: false,
+	usePrefix: true,
 	cooldowns: 5,
 	dependencies: {
 		"fs-extra": "",
