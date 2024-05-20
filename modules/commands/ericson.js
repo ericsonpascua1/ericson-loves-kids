@@ -29,7 +29,7 @@ const { threadID, messageID, body } = event;
   const rand = ["Hi user if you don't know how to use me just type <ericson help>","Hey There user I'm ericson how can I assist you today? 😊", "Hello there user can I sing for you? 🥰", "Hello There user did you know that I can sing, download facebook videos, search image and more...", "Hello There user I'm ericson the owner is ericson終."];
   const rand1 = rand[Math.floor(Math.random() * rand.length)];
   if (txt.toLowerCase() == "help"){
-    const message = `•——[HAROLD HUTCHINS BOT]——•
+    const message = `•——[ERICSON BOT]——•
 THESE ARE THE THINGS I CAN DO AS A BOT.
 
 •ERICSON CAN SING SONGS.
