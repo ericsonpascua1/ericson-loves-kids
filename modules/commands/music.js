@@ -7,7 +7,7 @@ module.exports.config = {
   usePrefix: true,
   commandCategory: "media",
   usages: "[title]",
-  cooldowns: 10,
+  cooldowns: 2,
   dependencies: {
     "fs-extra": "",
     "request": "",
