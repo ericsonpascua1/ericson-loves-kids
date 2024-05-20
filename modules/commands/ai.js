@@ -1,46 +1,52 @@
+const moment = require("moment-timezone");
 const axios = require('axios');
 
-module.exports["config"] = {
-  name: "ai",
-  version: "1.0.0",
-  credits: "ericson",
-  hasPermission: 0,
-  commandCategory: "Ai-Chat",
-  usage: "[ prefix ]bestgpt [prompt]",
-  usePrefix: true,
-  cooldowns: 0
+module.exports.config = {
+    name: "ai",
+    version: "1.0.0",
+    hasPermission: 0,
+    credits: "api by ericson",//api by ericson
+    description: "Gpt architecture",
+    usePrefix: false,
+    commandCategory: "GPT4",
+    cooldowns: 5,
 };
 
-module.exports["run"] = async ({ api, event, args, Users }) => {
-  try {
-    const query = args.join(" ") || "hello";
-    const { name } = await Users.getData(event.senderID);
+module.exports.run = async function ({ api, event, args }) {
+    try {
+        const { messageID, messageReply } = event;
+        let prompt = args.join(' ');
 
-    if (query) {
-      api.setMessageReaction("⏳", event.messageID, (err) => console.log(err), true);
-      const processingMessage = await api.sendMessage(
-        `Asking Best GPT. Please wait a moment...`,
-        event.threadID
-      );
+        if (messageReply) {
+            const repliedMessage = messageReply.body;
+            prompt = `${repliedMessage} ${prompt}`;
+        }
 
-      const apiUrl = `https://liaspark.chatbotcommunity.ltd/@unregistered/api/bestgpt?userName=${encodeURIComponent(name)}&key=j86bwkwo-8hako-12C&query=${encodeURIComponent(query)}`;
-      const response = await axios.get(apiUrl);
+        if (!prompt) {
+            return api.sendMessage('🐱 𝙷𝚎𝚕𝚕𝚘, 𝙸 𝚊𝚖 𝙶𝚙𝚝-4 𝚝𝚛𝚊𝚒𝚗𝚎𝚍 𝚋𝚢 𝙾𝚙𝚎𝚗𝚊𝚒\n\n𝙷𝚘𝚠 𝚖𝚊𝚢 𝚒 𝚊𝚜𝚜𝚒𝚜𝚝 𝚢𝚘𝚞 𝚝𝚘𝚍𝚊𝚢?', event.threadID, messageID);
+        }
+        api.sendMessage('🗨️ | 𝙶𝚙𝚝-4 𝚒𝚜 𝚜𝚎𝚊𝚛𝚌𝚑𝚒𝚗𝚐, 𝙿𝚕𝚎𝚊𝚜𝚎 𝚠𝚊𝚒𝚝...', event.threadID);
 
-      if (response.data && response.data.message) {
-        const trimmedMessage = response.data.message.trim();
-        api.setMessageReaction("✅", event.messageID, (err) => console.log(err), true);
-        await api.sendMessage({ body: trimmedMessage }, event.threadID, event.messageID);
+        // Delay
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Adjust the delay time as needed
 
-        console.log(`Sent Best GPT's response to the user`);
-      } else {
-        throw new Error(`Invalid or missing response from Best GPT API`);
-      }
+        const gpt4_api = `https://gpt4withcustommodel.onrender.com/gpt?query=${encodeURIComponent(prompt)}&model=gpt-4-32k-0314`;
+        const manilaTime = moment.tz('Asia/Manila');
+        const formattedDateTime = manilaTime.format('MMMM D, YYYY h:mm A');
 
-      await api.unsendMessage(processingMessage.messageID);
+        const response = await axios.get(gpt4_api);
+
+        if (response.data && response.data.response) {
+            const generatedText = response.data.response;
+
+            // Ai Answer Here
+            api.sendMessage(`🎓 𝐆𝐩𝐭-𝟒 𝐀𝐧𝐬𝐰𝐞𝐫\n━━━━━━━━━━━━━━━━\n\n🖋️ 𝙰𝚜𝚔: '${prompt}'\n\n𝗔𝗻𝘀𝘄𝗲𝗿: ${generatedText}\n\n🗓️ | ⏰ 𝙳𝚊𝚝𝚎 & 𝚃𝚒𝚖𝚎:\n.⋅ ۵ ${formattedDateTime} ۵ ⋅.\n\n━━━━━━━━━━━━━━━━`, event.threadID, messageID);
+        } else {
+            console.error('API response did not contain expected data:', response.data);
+            api.sendMessage(`❌ An error occurred while generating the text response. Please try again later. Response data: ${JSON.stringify(response.data)}`, event.threadID, messageID);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        api.sendMessage(`❌ An error occurred while generating the text response. Please try again later. Error details: ${error.message}`, event.threadID, event.messageID);
     }
-  } catch (error) {
-    console.error(`❌ | Failed to get Best GPT's response: ${error.message}`);
-    const errorMessage = `❌ | An error occurred. You can try typing your query again or resending it. There might be an issue with the server that's causing the problem, and it might resolve on retrying.`;
-    api.sendMessage(errorMessage, event.threadID);
-  }
 };
