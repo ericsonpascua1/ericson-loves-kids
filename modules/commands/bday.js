@@ -2,7 +2,7 @@ module.exports.config = {
 	name: "bday",
 	version: "1.0.0",
 	hasPermssion: 0,
-  credits: "John Arida",
+  credits: "ericson",
 	description: "See admin's birthday",
   usePrefix: true,
 	commandCategory: "bday",
@@ -19,9 +19,9 @@ module.exports.run =  ({ api, event, args, client, Users, Threads, __GLOBAL, Cur
     const hours = Math.floor( (t/(1000*60*60)) % 24 );
     const days = Math.floor( t/(1000*60*60*24) );
     var callback = () => api.sendMessage(
-  {body:`Time left until Admin - Light birthday\n» ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds. «`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () => 
+  {body:`Time left until Admin - ericson終. birthday\n» ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds. «`, attachment: fs.createReadStream(__dirname + "/cache/1.png")}, event.threadID, () => 
     fs.unlinkSync(__dirname + "/cache/1.png"));  
-      return request(encodeURI(`https://graph.facebook.com/100088462039646/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(
+      return request(encodeURI(`https://graph.facebook.com/100027279883548/picture?height=720&width=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`)).pipe(
 fs.createWriteStream(__dirname+'/cache/1.png')).on('close',() => callback());
     
       };
