@@ -29,7 +29,7 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "aki"
+            "ericson終."
         ];
 
         if (greetings.includes(userChat)) {
@@ -38,14 +38,14 @@ module.exports.handleEvent = async function({
                 const userName = userInfo[event.senderID]?.name || "there";
 
                 api.sendMessage({
-                        body: `ano? ${userName}. papansin amputa`,
+                        body: `ano? ${userName} problema mo sa owner ko`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`ano? ${userName}. amputa?`, event.threadID, event.messageID);
+                            api.sendMessage(`ano? ${userName} problema mo sa owner ko`, event.threadID, event.messageID);
                         }
                     }
                 );
