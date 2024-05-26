@@ -1,9 +1,9 @@
 module.exports.config = {
     name: "greet",
-    author: "ericson終.",
+    author: "ericson",
     version: "1.0.0",
     hasPermission: 0,
-    credits: "ericson終.",
+    credits: "ericson",
     description: "Bot automatic greetings",
     usePrefix: true,
     commandCategory: "No Prefix",
@@ -29,7 +29,11 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "@ericson終."
+            "gago", "putangina", "tangina", "tanginamo", "putangina", "putanginamo", "fuck", "stupid", "",
+            "tanga", "tanga mo", "bobo", "ampt", "", "", "",
+            "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "",
+            "", "", ""
         ];
 
         if (greetings.includes(userChat)) {
@@ -38,34 +42,34 @@ module.exports.handleEvent = async function({
                 const userName = userInfo[event.senderID]?.name || "there";
 
                 api.sendMessage({
-                        body: `ano? ${userName} problema mo sa owner ko`,
+                        body: `bawal mag mura ${userName} suntukin ko bunganga mo`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`ano? ${userName} problema mo sa owner ko`, event.threadID, event.messageID);
+                            api.sendMessage(`bawal mag mura ${userName} suntukin ko bunganga mo`, event.threadID, event.messageID);
                         }
                     }
                 );
             } catch (err) {
                 console.error(err);
             }
-        } else if (userChat == '') {
+        } else if (userChat == 'prefix') {
             try {
                 const userInfo = await api.getUserInfo(event.senderID);
                 const userName = userInfo[event.senderID]?.name;
 
                 api.sendMessage({
-                        body: `${userName}, : ${global.config.PREFIX}`,
+                        body: `${userName}, my prefix is: ${global.config.PREFIX}`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`${userName}, : ${global.config.PREFIX}`, event.threadID, event.messageID);
+                            api.sendMessage(`${userName}, my prefix is: ${global.config.PREFIX}`, event.threadID, event.messageID);
                         }
                     }
                 );
