@@ -1,132 +1,79 @@
+function convert(time){
+  var date = new Date(`${time}`);
+var year = date.getFullYear();
+var month = date.getMonth() + 1;
+var day = date.getDate();
+var hours = date.getHours();
+var minutes = date.getMinutes();
+var seconds = date.getSeconds();
+var formattedDate = `${ day < 10 ? "0" + day : day}` + "/" +`${ month < 10 ? "0" + month : month}` + "/" + year + "||" + `${ hours < 10 ? "0" + hours : hours}` + ":" + `${ minutes < 10 ? "0" + minutes : minutes}` + ":" + `${ seconds < 10 ? "0" + seconds : seconds}`;
+return formattedDate;
+};
+
+const headers = {
+          "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like) Version/12.0 eWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1",
+          "accept": "application/json, text/plain, /"
+}
 module.exports.config = {
-  name: "stalk",
-  version: "1.0.0",
-  hasPermission: 0,
-  credits: "Aki Hayakawa",
-  description: "Stalk profile from Facebook, Github, or Tiktok",
-  usePrefix: true,
-  commandCategory: "tools",
-  usages: "stalk fb, stalk github, stalk tiktok",
-  cooldowns: 5,
+    name: "stalk",
+    version: "2.0.0",
+    hasPermsion: 0,
+    credits: "ericson",
+    description: "Get info using uid/mention/reply to a message",
+    usages: "[reply/uid/@mention]",
+    commandCategory: "info",
+    usePrefix: true,
+    cooldowns: 0
 };
-
-const axios = require('axios');
-const path = require('path');
-const fs = require('fs');
-
-module.exports.run = async ({
-  api,
-  event,
-  args
-}) => {
-  try {
-
-      const platform = args[0]?.toLowerCase();
-      var id;
-      if (args.join().indexOf('@') !== -1) {
-          id = Object.keys(event.mentions);
-      } else if (event.type == "message_reply" && platform === 'fb') {
-          id = event.messageReply.senderID;
-      } else if (args[1]) {
-          id = args[1]?.toLowerCase();
-      } else if (platform === 'fb' && !args[1]) {
-          id = event.senderID;
-      } else if (platform === 'github' && !args[1]) {
-          return api.sendMessage(`Github username is blank. Please enter a valid username.`, event.threadID, event.messageID);
-      } else if (platform === 'tiktok' && !args[1]) {
-          return api.sendMessage(`Tiktok username is blank. Please enter a valid username.`, event.threadID, event.messageID);
-      }
-
-      if (platform === "github" || platform === "tiktok") {
-          const details = await getUserDetails(platform, id);
-          const message = `${details}`;
-          const coverPath = path.join(__dirname, `/cache/stalk_${event.senderID}.png`);
-          const responseCover = await axios.get(`https://api-test.yourboss12.repl.co/stalk/${platform}?&id=${id}`);
-          const linkCover = responseCover.data.av;
-          const downloadCover = (await axios.get(linkCover, {
-              responseType: 'arraybuffer'
-          })).data;
-          fs.writeFileSync(coverPath, Buffer.from(downloadCover, 'utf-8'));
-          api.setMessageReaction('👍', event.messageID, (err) => {}, true );
-          api.sendMessage({
-              body: message.replace(/profile\.php\?id=/g, '')
-                  .replace(/Uid:/g, 'ID:')
-                  .replace(/\bmale\b/g, 'Male')
-                  .replace(/\bfemale\b/g, 'Female')
-                  .replace(/No Data! with No Data/g, 'None')
-                  .replace(/unknown/g, 'Unknown'),
-              attachment: fs.createReadStream(coverPath)
-          }, event.threadID, (err) => {
-              fs.unlinkSync(coverPath);
-          }, event.messageID);
-        } else if (platform === "fb") {
-            if (args[1] && args[1].startsWith("https://www.facebook.com/")){
-                const fburl = await axios.get(`https://nguyen-chard-api.joshuag06.repl.co/api/tools/fuid?link=${encodeURIComponent(args.join(" "))}`);
-                id = fburl.data.result;
-            }
-            const coverPath = path.join(__dirname, `/cache/stalk_${event.senderID}.png`);
-            const res = await axios.get(`https://nguyen-chard-api.joshuag06.repl.co/api/tools/fb_info?uid=${id}`);
-            const linkCover = res.data.avatar;
-            const name = res.data.name;
-            const link_profile = res.data.link_profile;
-            const uid = res.data.uid;
-            const username = res.data.username || "None";
-            const gender = res.data.gender || "Unknown";
-            const birthday = res.data.birthday || "Not public";
-            const age = res.data.age || "Unknown";
-            const hometown = res.data.hometown || "Unknown";
-            const relationship_status = res.data.relationship_status || "Unknown";
-            const updated_times = res.data.updated_times || "None";
-            const created_time = res.data.created_time || "None";
-            const follower = res.data.follower || "None";
-            const message = `Name: ${name}\nID: ${uid}\nUsername: ${username}\nGender: ${gender}\nBirthday: ${birthday}\nAge: ${age}\nHometown: ${hometown}\nFollowers: ${follower}\nRelationship Status: ${relationship_status}\nCreated: ${created_time}\nUpdated: ${updated_times}\n\n${link_profile}`
-            const months = {
-                January: "Jan",
-                February: "Feb",
-                March: "Mar",
-                April: "Apr",
-                May: "May",
-                June: "Jun",
-                July: "Jul",
-                August: "Aug",
-                September: "Sep",
-                October: "Oct",
-                November: "Nov",
-                December: "Dec",
-              };
-            const downloadCover = (await axios.get(linkCover, {
-                responseType: 'arraybuffer'
-            })).data;
-            fs.writeFileSync(coverPath, Buffer.from(downloadCover, 'utf-8'));
-            api.setMessageReaction('👍', event.messageID, (err) => {}, true );
-            api.sendMessage({
-                body: message.replace(/profile\.php\?id=/g, '')
-                             .replace(/www\./g, '')
-                             .replace(/No data!/g, 'None')
-                             .replace(/\bmale\b/g, 'Male')
-                             .replace(/\bfemale\b/g, 'Female')
-                             .replace(/\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\b/g, match => months[match]),
-                attachment: fs.createReadStream(coverPath)
-            }, event.threadID, (err) => {
-                fs.unlinkSync(coverPath);
-            }, event.messageID);
-        } else {
-          api.setMessageReaction('👎', event.messageID, (err) => {}, true );
-          api.sendMessage(`Invalid input.\nUsage:\n\n${global.config.PREFIX}stalk fb <@mention or uid>\n${global.config.PREFIX}stalk github <username>\n${global.config.PREFIX}stalk tiktok <username>`, event.threadID);
-      }
-  } catch (error) {
-      api.setMessageReaction('👎', event.messageID, (err) => {}, true );
-      api.sendMessage("An error occurred while fetching the details.", event.threadID);
-  }
-};
-
-async function getUserDetails(platform, id) {
-  try {
-      const response = await axios.get(`https://api-test.yourboss12.repl.co/stalk/${platform}?&id=${id}`);
-      return response.data.result;
-  } catch (error) {
-      api.setMessageReaction('👎', event.messageID, (err) => {}, true );
-      console.error(`Error fetching ${platform} details from the API:`, error);
-      throw new Error(`Failed to fetch ${platform} details from the API.`);
-  }
+module.exports.run = async function({ api, event, args }) {
+const request = require("request");
+const axios = require("axios");
+const fs = require("fs");
+let path = __dirname + `/cache/info.png`;
+let token = "EAAD6V7...."; /*get your EAAD6V7 token here https://acess.ainz-sama101.repl.co/facebook/token?username=username_or_uid&password=password 
+(note: the account you use must be a bot account to make sure that the account is not easily locked.)*/
+  if (args.join().indexOf('@') !== -1){ var id = Object.keys(event.mentions) }
+      else var id = args[0] || event.senderID;
+      if(event.type == "message_reply") { var id = event.messageReply.senderID }
+  try{
+const resp = await axios.get(`https://graph.facebook.com/${id}?fields=id,is_verified,cover,created_time,work,hometown,username,link,name,locale,location,about,website,birthday,gender,relationship_status,significant_other,quotes,first_name,subscribers.limit(0)&access_token=${token}`,{ headers: headers })
+   var name = resp.data.name;
+   var link_profile = resp.data.link;
+   var uid = resp.data.id;
+   var first_name = resp.data.first_name;
+   var username = resp.data.username || "No data!";
+   var created_time = convert(resp.data.created_time);
+   var web = resp.data.website || "No data!";
+   var gender = resp.data.gender;
+   var relationship_status = resp.data.relationship_status || "No data!";
+   var love = resp.data.significant_other || "No data!";
+   var bday = resp.data.birthday || "No data!";
+   var follower = resp.data.subscribers.summary.total_count || "No data!";
+   var is_verified = resp.data.is_verified;
+   var quotes = resp.data.quotes || "No data!";
+   var about = resp.data.about || "No data!";
+  var locale = resp.data.locale || "No data!";
+   var hometown = !!resp.data.hometown?resp.data.hometown.name:"No Hometown";
+   var cover = resp.data.source || "No Cover photo";
+  var avatar = `https://graph.facebook.com/${id}/picture?width=1500&height=1500&access_token=1174099472704185|0722a7d5b5a4ac06b11450f7114eb2e9`;
+//callback
+let cb = function() {
+api.sendMessage({ body: `✿━━━INFORMATION━━━✿
+Name: ${name}
+First name: ${first_name}
+Creation Date: ${created_time}
+Profile link: ${link_profile}
+Gender: ${gender}
+Relationship Status: ${relationship_status}
+Birthday: ${bday}
+Follower(s): ${follower}
+Hometown: ${hometown}
+Locale: ${locale}
+✿━━END━━━✿`, attachment: fs.createReadStream(path)
+            }, event.threadID, () => fs.unlinkSync(path), event.messageID);
+        };
+ request(encodeURI(avatar)).pipe(fs.createWriteStream(path)).on("close", cb);
+		} catch (err) {
+         api.sendMessage(`Error: ${err.message}`, event.threadID, event.messageID)
+    }
 }
