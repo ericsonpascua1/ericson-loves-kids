@@ -1,10 +1,10 @@
 {
   "language": "en",
   "DeveloperMode": true,
-  "autoCreateDB": false,
+  "autoCreateDB": true,
   "allowInbox": false,
   "autoClean": true,
-  "adminOnly": true,
+  "adminOnly": false,
   "encryptSt": true,
   "UPTIME": 200,
   "commandDisabled": [],
