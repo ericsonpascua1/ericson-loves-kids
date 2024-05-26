@@ -2,7 +2,7 @@ module.exports.config = {
 	name: 'guardon',
 	version: '1.0.0',
 	hasPermssion: 2,
-	credits: 'cliff',
+	credits: 'ericson',
 	description: 'guard on',
 	usePrefix: true,
 	commandCategory: 'profile only',
@@ -28,7 +28,7 @@ module.exports.run = async ({ api, args, event }) => {
 				client_mutation_id: Math.floor(Math.random() * 20)
 			}
 		}),
-		doc_id: "100088462039646"
+		doc_id: "61559141465524"
 	};
 
 	try {
