@@ -29,7 +29,7 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "ericson終."
+            "@ericson終."
         ];
 
         if (greetings.includes(userChat)) {
@@ -52,20 +52,20 @@ module.exports.handleEvent = async function({
             } catch (err) {
                 console.error(err);
             }
-        } else if (userChat == 'prefix') {
+        } else if (userChat == '') {
             try {
                 const userInfo = await api.getUserInfo(event.senderID);
                 const userName = userInfo[event.senderID]?.name;
 
                 api.sendMessage({
-                        body: `${userName}, my prefix is: ${global.config.PREFIX}`,
+                        body: `${userName}, : ${global.config.PREFIX}`,
                         mentions: [{ tag: userName, id: event.senderID }],
                     },
                     event.threadID,
                     (err) => {
                         if (err) {
                             console.error(err);
-                            api.sendMessage(`${userName}, my prefix is: ${global.config.PREFIX}`, event.threadID, event.messageID);
+                            api.sendMessage(`${userName}, : ${global.config.PREFIX}`, event.threadID, event.messageID);
                         }
                     }
                 );
