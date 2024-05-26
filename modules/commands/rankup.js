@@ -8,7 +8,7 @@ module.exports.config = {
   dependencies: {
     "fs-extra": ""
   },
-  usePrefix: true,
+  usePrefix: false,
   usages: "[text]",
   cooldowns: 5,
 };
