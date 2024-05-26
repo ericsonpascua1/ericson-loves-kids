@@ -3,12 +3,12 @@ module.exports.config = {
     name: "prefix",
     version: "1.0.1",
     hasPermssion: 0,
-    credits: "ericson",
+    credits: "ericson",//palitan mo lang kingina ka
     description: "hihihihi",
+  usePrefix: false,
     commandCategory: "no prefix",
-    usePrefix: false,
     usages: "prefix",
-    cooldowns: 5,
+    cooldowns: 1,
 };
 
 module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
@@ -30,14 +30,17 @@ module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
             // Send text message with prefix information
             api.sendMessage(
                 {
-                    body: `Yo, my prefix is [ 𓆩 ${global.config.PREFIX} 𓆪 ]\n
-𝗦𝗢𝗠𝗘 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦 𝗧𝗛𝗔𝗧 𝗠𝗔𝗬 𝗛𝗘𝗟𝗣 𝗬𝗢𝗨:
-➥ ${global.config.PREFIX}help [number of page] -> see commands
-➥ ${global.config.PREFIX}sim [message] -> talk to bot
-➥ ${global.config.PREFIX}callad [message] -> report any problem encountered
-➥ ${global.config.PREFIX}help [command] -> information and usage of command\n\nHave fun using it enjoy!❤️\nBot Developer: ${global.config.OWNERLINK} `,
+                    body: `🛑‎━━━━━━━━━━━━━━🛑
+GROUP CHAT : https://m.me/j/AbbDdCA6Kzbhk-eL/
+━━━━━━━━━━━━━━━━
+MY prefix is : ${global.config.PREFIX}
+━━━━━━━━━━━━━━━━━
+time : ${global.client.getTime("fullTime")}
+
+🛑━━━━━━━━━━━━━━━🛑
+DEVELOPER :  https://www.facebook.com/ericsonpascua6`,
                     attachment: fs.createReadStream(
-                        __dirname + `/noprefix/prefix.jpeg`
+                        __dirname + `prefix.jpg`
                     ),
                 },
                 threadID,
@@ -46,7 +49,7 @@ module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
 
             // Send voice message with additional information
             const voiceFile = fs.readFileSync(
-                __dirname + "/noprefix/prefix.jpeg"
+                __dirname + "prefix.jpg"
             );
             api.sendMessage(
                 {
@@ -58,7 +61,7 @@ module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
                 () => {}
             );
 
-            api.setMessageReaction("🚀", event.messageID, (err) => {}, true);
+            api.setMessageReaction("🥵", event.messageID, (err) => {}, true);
         }
     });
 };
