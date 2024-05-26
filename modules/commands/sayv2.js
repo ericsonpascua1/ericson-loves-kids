@@ -4,7 +4,7 @@ module.exports.config = {
   hasPermssion: 0,
   credits: "Mirai Team/Modified By Ciel",
   description: "Make the bot return google's audio file via text",
-  usePrefix: false,
+  usePrefix: true,
   commandCategory: "Song/video",
   usages: "[ru/en/ko/ja/tl] [Text]",
   cooldowns: 5,
