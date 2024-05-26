@@ -15,7 +15,7 @@ module.exports.run = async({ event, api, Threads, Users }) => {
  if (type == "self-separation") {
   api.addUserToGroup(event.logMessageData.leftParticipantFbId, event.threadID, (error, info) => {
    if (error) {
-    api.sendMessage(`Failed to re-add ${name}.`, event.threadID)
+    api.sendMessage(`uy si ${name} ay lumipad 'wag kang sasali kapag mag leleft ka rin gago tanginamo wala ka namang ambag sa ekonomiya tadyakan ko muka mo. pabitay kita kay heneral luna tanginamo ulol putanginamo tarantado gago tanga bastos walang modo bobo baliw shit siraulo sinto sinto punyeta kulang kulang may sayad stupid pakyu abnormal animal aso pusa daga ibon ahas ipis baka tigre buwaya pagong elepante unggoy puta nasau na lahat`, event.threadID)
    } else api.sendMessage(`tanga wala kang takas dito ${name} `, event.threadID);
   })
  }
