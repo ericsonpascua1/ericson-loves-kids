@@ -1,113 +1,53 @@
-const fs = require('fs');
-const request = require('request');
+const axios = require("axios");
+const { createReadStream, unlinkSync } = require("fs");
+const { resolve } = require("path");
 
 module.exports.config = {
-    name: "sendnoti",
-    version: "1.0.0",
-    hasPermssion: 2,
-    credits: "ericson終.",
-    description: "",
-    commandCategory: "Tiện ích",
-    usages: "[msg]",
-    cooldowns: 5,
-}
+  name: "sendnoti",
+  version: "1.1.0",
+  hasPermssion: 2,
+  credits: "ericson終.",
+  description: "Sends a message to all groups and can only be done by the admin.",
+  usePrefix: true,
+  commandCategory: "message",
+  usages: "[Text]",
+  cooldowns: 0,
+};
 
-let atmDir = [];
 
-const getAtm = (atm, body) => new Promise(async (resolve) => {
-    let msg = {}, attachment = [];
-    msg.body = body;
-    for(let eachAtm of atm) {
-        await new Promise(async (resolve) => {
-            try {
-                let response =  await request.get(eachAtm.url),
-                    pathName = response.uri.pathname,
-                    ext = pathName.substring(pathName.lastIndexOf(".") + 1),
-                    path = __dirname + `/cache/${eachAtm.filename}.${ext}`
-                response
-                    .pipe(fs.createWriteStream(path))
-                    .on("close", () => {
-                        attachment.push(fs.createReadStream(path));
-                        atmDir.push(path);
-                        resolve();
-                    })
-            } catch(e) { console.log(e); }
-        })
-    }
-    msg.attachment = attachment;
-    resolve(msg);
-})
+module.exports.run = async function ({ api, event, args }) {
+  
+  if ((this.config.credits) != "ericson終.") { return api.sendMessage(`[ 𝗔𝗡𝗧𝗜 𝗖𝗛𝗔𝗡𝗚𝗘 𝗖𝗥𝗘𝗗𝗜𝗧𝗦 ]
+𝗔𝗗𝗠𝗜𝗡 𝗠𝗘𝗦𝗦𝗔𝗚𝗘: 
+ᴄʜᴀɴɢᴇ ᴄʀᴇᴅɪᴛs ᴘᴀ ᴀᴋᴏ sᴀʏᴏ ᴍᴀɢ ᴘʀᴀᴄᴛɪᴄᴇ ᴋᴀ😝 
+𝗠𝗘𝗠𝗕𝗘𝗥 𝗠𝗘𝗦𝗦𝗔𝗚𝗘:
+𝚃𝚑𝚒𝚜 𝚋𝚘𝚝 𝚌𝚛𝚎𝚊𝚝𝚘𝚛 𝚒𝚜 𝚊 𝚌𝚑𝚊𝚗𝚐𝚎 𝚌𝚛𝚎𝚍𝚒𝚝𝚘𝚛 𝚔𝚊𝚢𝚊 𝚋𝚎 𝚊𝚠𝚊𝚛𝚎 𝚗𝚎𝚡𝚝 𝚝𝚒𝚖𝚎.
 
-module.exports.handleReply = async function ({ api, event, handleReply, Users, Threads }) {
-    const moment = require("moment-timezone");
-      var gio = moment.tz("Asia/Manila").format("DD/MM/YYYY - HH:mm:s");
-    const { threadID, messageID, senderID, body } = event;
-    let name = await Users.getNameUser(senderID);
-    switch (handleReply.type) {
-        case "sendnoti": {
-            let text = `━━━━━━ [ User Reply ] ━━━━━━\n==============\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n==============\n『Reply』 : ${body}\n\n==============\nUser Name ${name}  From Group ${(await Threads.getInfo(threadID)).threadName || "Unknow"}`;
-            if(event.attachments.length > 0) text = await getAtm(event.attachments, `━━━━━━ [ User Reply ] ━━━━━━\n\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n-==============\n『Reply』 : ${body}\n\n==============\nUser Name: ${name} From Group ${(await Threads.getInfo(threadID)).threadName || "Unknow"}`);
-            api.sendMessage(text, handleReply.threadID, (err, info) => {
-                atmDir.forEach(each => fs.unlinkSync(each))
-                atmDir = [];
-                global.client.handleReply.push({
-                    name: this.config.name,
-                    type: "reply",
-                    messageID: info.messageID,
-                    messID: messageID,
-                    threadID
-                })
-            });
-            break;
-        }
-        case "reply": {
-            let text = `━━━━━━[MESSAGE FROM 𝑨𝑫𝑴𝑰𝑵 ] ━━━━━━\n==============\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n==============\n『Message』 : ${body}\n\n==============\n『Admin Name』 ${name}\n==============\nReply to this Message if you want to respond to this Announce`;
-            if(event.attachments.length > 0) text = await getAtm(event.attachments, `${body}━━━━━━ [ MESSAGE FROM 𝑨𝑫𝑴𝑰𝑵 ] ━━━━━━\n==============\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n==============\n『Admin Name』 ${name}\n==============\nReply to this Message if you want to respond to this Announce.`);
-            api.sendMessage(text, handleReply.threadID, (err, info) => {
-                atmDir.forEach(each => fs.unlinkSync(each))
-                atmDir = [];
-                global.client.handleReply.push({
-                    name: this.config.name,
-                    type: "sendnoti",
-                    messageID: info.messageID,
-                    threadID
-                })
-            }, handleReply.messID);
-            break;
-        }
-    }
-}
+𝗢𝗪𝗡𝗘𝗥 𝗢𝗙 𝗧𝗛𝗜𝗦 𝗖𝗢𝗠𝗠𝗔𝗡𝗗: 
+https://facebook.com/100053549552408
 
-module.exports.run = async function ({ api, event, args, Users }) {
-    const moment = require("moment-timezone");
-      var gio = moment.tz("Asia/Manila").format("DD/MM/YYYY - HH:mm:s");
-    const { threadID, messageID, senderID, messageReply } = event;
-    if (!args[0]) return api.sendMessage("Please input message", threadID);
-    let allThread = global.data.allThreadID || [];
-    let can = 0, canNot = 0;
-    let text = `━━━━━━ [ MESSAGE FROM ADMIN ] ━━━━━━\n==============\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n==============\n『MESSAGE』 : ${args.join(" ")}\n\n==============\n『ADMIN NAME』 ${await Users.getNameUser(senderID)} \n==============\nReply to this Message if you want to respond to this Announce`;
-    if(event.type == "message_reply") text = await getAtm(messageReply.attachments, `━━━━━━[ MESSAGE FROM ADMIN ] ━━━━━━\n==============\n『𝗧𝗶𝗺𝗲』: ${gio}\n\n==============\n『MESSAGE』 : ${args.join(" ")}\n\n==============\n『ADMIN NAME』 ${await Users.getNameUser(senderID)}\n==============\nReply to this Message if you want to respond to this Announce`);
-    await new Promise(resolve => {
-        allThread.forEach((each) => {
-            try {
-                api.sendMessage(text, each, (err, info) => {
-                    if(err) { canNot++; }
-                    else {
-                        can++;
-                        atmDir.forEach(each => fs.unlinkSync(each))
-                        atmDir = [];
-                        global.client.handleReply.push({
-                            name: this.config.name,
-                            type: "sendnoti",
-                            messageID: info.messageID,
-                            messID: messageID,
-                            threadID
-                        })
-                        resolve();
-                    }
-                })
-            } catch(e) { console.log(e) }
-        })
-    })
-    api.sendMessage(`Send to ${can} thread, not send to ${canNot} thread`, threadID);
-}
+`, event.threadID, event.messageID)}
+  
+  const threadList = await api.getThreadList(25, null, ["INBOX"]);
+  let sentCount = 0;
+  const custom = args.join(" ");
+
+  async function sendMessage(thread) {
+    try {
+      await api.sendMessage(
+        `𝙉𝙊𝙏𝙄𝘾𝙀 𝙁𝙍𝙊𝙈 𝘿𝙀𝙑𝙀𝙇𝙊𝙋𝙀𝙍 
+ ---------------- 
+『𝘋𝘦𝘷𝘦𝘭𝘰𝘱𝘦𝘳 𝘕𝘢𝘮𝘦』:ericson終.
+ --------------- 
+ 『𝗡𝗼𝘁𝗶𝗰𝗲』${custom}`,
+        thread.threadID
+      );
+      sentCount++;
+
+      const content =`${custom}`;
+      const languageToSay = "tl"; 
+      const pathFemale = resolve(__dirname, "cache", `${thread.threadID}_female.mp3`);
+
+      
+      await global.utils.downloadFile(
+        `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(
