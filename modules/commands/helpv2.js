@@ -128,7 +128,7 @@ let path = __dirname + `/cache/help.png`;
   ).data;
   fs.writeFileSync(path, Buffer.from(image, "utf-8"));*/
     const text = `𝗧𝗼𝘁𝗮𝗹 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀:『${arrayInfo.length}』
-𝗣𝗢𝗚𝗜 𝗣𝗔 𝗞𝗜𝗦𝗦 𝗣𝗪𝗘𝗗𝗘?\n\n𝗥𝗔𝗡𝗗𝗢𝗠 𝗙𝗔𝗖𝗧: ${randomQuote}`;
+https://www.facebook.com/ericsonpascua6\n\n𝗥𝗔𝗡𝗗𝗢𝗠 𝗙𝗔𝗖𝗧: ${randomQuote}`;
     return api.sendMessage(`【﻿ｅｒｉｃｓｏｎ】\n\n◦❭❯❱ 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦 & 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗬 ❰❮❬◦\n\n 𝗣𝗮𝗴𝗲 『 ${page} /${Math.ceil(arrayInfo.length/numberOfOnePage)} 』` + "\n" + msg + "\n" + text, threadID, async (error, info) => {
       if (autoUnsend) {
         await new Promise(resolve => setTimeout(resolve, delayUnsend * 10000));
