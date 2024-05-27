@@ -1,94 +1,104 @@
-const moment = require('moment');
-const axios = require('axios');
-
-module.exports.config = {
+ module.exports.config = {
   name: "help",
-  version: "1.0.0",
-  hasPermission: 0,
-  credits: "ericson",
-  description: "Get help about available commands.",
+  version: "1.0.2",
+  hasPermssion: 0,
+  credits: "ericson",//modify by ericson
+  description: "Beginner's Guide",
   usePrefix: true,
-  commandCategory: "information",
-  usages: "[command]",
-  cooldowns: 5,
+  commandCategory: "system",
+  usages: "[Tên module]",
+  cooldowns: 1,
+  envConfig: {
+    autoUnsend: true,
+    delayUnsend: 300
+  }
 };
 
-module.exports.run = async function ({ api, event, args }) {
+module.exports.languages = {
+  //"vi": {
+  //	"moduleInfo": "「 %1 」\n%2\n\n❯ Cách sử dụng: %3\n❯ Thuộc nhóm: %4\n❯ Thời gian chờ: %5 giây(s)\n❯ Quyền hạn: %6\n\n» Module code by %7 «",
+  //	"helpList": '[ Hiện tại đang có %1 lệnh có thể sử dụng trên bot này, Sử dụng: "%2help nameCommand" để xem chi tiết cách sử dụng! ]"',
+  //	"user": "Người dùng",
+  //      "adminGroup": "Quản trị viên nhóm",
+  //      "adminBot": "Quản trị viên bot"
+//	},
+  "en": {
+    "moduleInfo": "『 %1 』\n%2\n\n❯ Usage: %3\n❯ Category: %4\n❯ Waiting time: %5 seconds(s)\n❯ Permission: %6\n\nModule code by %7",
+    "helpList": '[ There are %1 commands on this bot, Use: "%2help nameCommand" to know how to use! ]',
+    "user": "User",
+        "adminGroup": "Admin group",
+        "adminBot": "Admin bot"
+  }
+};
+
+module.exports.handleEvent = function ({ api, event, getText }) {
+  const { commands } = global.client;
+  const { threadID, messageID, body } = event;
+
+  if (!body || typeof body == "undefined" || body.indexOf("help") != 0) return;
+  const splitBody = body.slice(body.indexOf("help")).trim().split(/\s+/);
+  if (splitBody.length == 1 || !commands.has(splitBody[1].toLowerCase())) return;
+  const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
+  const command = commands.get(splitBody[1].toLowerCase());
+  const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
+  return api.sendMessage(getText("moduleInfo", command.config.name, command.config.description, `${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}`, command.config.commandCategory, command.config.cooldowns, ((command.config.hasPermssion == 0) ? getText("user") : (command.config.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), command.config.credits), threadID, messageID);
+}
+
+module.exports.run = function({ api, event, args, getText }) {
   const { commands } = global.client;
   const { threadID, messageID } = event;
-  const prefix = global.config.PREFIX;
-  const owner = config.DESIGN.Admin;
-  const botname = global.config.BOTNAME;
-  let msg = `      COMMANDS LIST OF ${botname} THAT YOU CAN USE \n❍──────────❍\nBot Owner: ${owner}\nPrefix: ${prefix}                                                                     ❍──────────❍\n`;
-
-  if (!args[0]) {
-    const commandList = Array.from(commands.values());
-    const itemsPerPage = 10;
-    const totalPages = Math.ceil(commandList.length / itemsPerPage);
-
-    let currentPage = 1;
-    if (args[0]) {
-      const parsedPage = parseInt(args[0]);
-      if (!isNaN(parsedPage) && parsedPage >= 1 && parsedPage <= totalPages) {
-        currentPage = parsedPage;
-      } else {
-        return api.sendMessage(
-          `◖Invalid page number. Please choose a page between 1 and ${totalPages}◗`,
-          threadID,
-          messageID
-        );
-      }
+  const command = commands.get((args[0] || "").toLowerCase());
+  const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
+  const { autoUnsend, delayUnsend } = global.configModule[this.config.name];
+  const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
+  if (args.join().indexOf('all')== 0) {
+    const command = commands.values();
+    var group = [], msg = "";
+    for (const commandConfig of command) {
+      if (!group.some(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase())) group.push({ group: commandConfig.config.commandCategory.toLowerCase(), cmds: [commandConfig.config.name] });
+      else group.find(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase()).cmds.push(commandConfig.config.name);
     }
+    group.forEach(commandGroup => msg += `『 ${commandGroup.group.charAt(0).toUpperCase() + commandGroup.group.slice(1)} 』\n${commandGroup.cmds.join(', ')}\n\n`);
 
-    const startIdx = (currentPage - 1) * itemsPerPage;
-    const endIdx = startIdx + itemsPerPage;
-    const visibleCommands = commandList.slice(startIdx, endIdx);
-
-    for (let i = 0; i < visibleCommands.length; i++) {
-      const cmd = visibleCommands[i].config;
-      msg += `「 ${i + 1} 」 ⟩ ${prefix}${cmd.name} ⟩ ${cmd.description}\n`;
-    }
-
-    msg += `❍──────────❍\n»Page (${currentPage}/${totalPages})«\nType: "${prefix}help <command name>" for more details about that command💞\n›Currently available ${commandList.length} commands on this bot‹\n📄Use ${prefix}help <Number of pages>`;
-
-    ////////// Fetch random quote////////
-    const quoteResponse = await axios.get('https://api.quotable.io/random');
-    const quote = quoteResponse.data.content;
-    const author = quoteResponse.data.author;
-    msg += `\n❍──────────❍\n[QUOTE💕 ]: ${quote} - ${author}`;
-
-    // Fetch random Bible verse//
-    const bibleVerseResponse = await axios.get('https://labs.bible.org/api/?passage=random&type=json');
-    const bibleVerse = bibleVerseResponse.data[0].text;
-    const bibleReference = bibleVerseResponse.data[0].bookname;
-    msg += `\n❍──────────❍\n[BibleVerse 📖 ]: ${bibleVerse} - ${bibleReference}`;
-
-    // DYK API
-    const dykResponse = await axios.get('https://useless-facts.sameerkumar.website/api');
-    const dyk = dykResponse.data.data;
-    msg += `\n❍──────────❍\n[Do you know💁]: ${dyk}`;
-
-    const header = `❍──────────❍`;
-    const footer = `❍──────────❍`;
-
-    const fullMsg = header + msg + footer;
-
-    api.sendMessage(fullMsg, threadID, messageID);
-  } else {
-    // Handle specific command details if args[0] is provided //
-    const commandName = args[0].toLowerCase();
-    if (commands.has(commandName)) {
-      const cmd = commands.get(commandName).config;
-      msg = `Name: ${prefix}${cmd.name}\nDescription: ${cmd.description}\nUsage: ${prefix}${cmd.name} ${cmd.usages}\nCategory: ${cmd.commandCategory}\nCooldown: ${cmd.cooldowns} seconds(s)\nPermission: ${
-        cmd.hasPermission === 0
-          ? "User"
-          : cmd.hasPermission === 1
-          ? "Admin group"
-          : "Admin bot"
-      }\nCredits: ${cmd.credits}`;
-      api.sendMessage(msg, threadID, messageID);
-    } else {
-      api.sendMessage(`◖Invalid command name. Type "${prefix}help" to see the list of available commands.◗`, threadID, messageID);
-    }
+    const moduleName = this.config.name;
+    return api.sendMessage(msg + ``, event.threadID, (err, info) => {
+      setTimeout(() => {api.unsendMessage(info.messageID)}, 120000)
+    }, event.messageID);
   }
+
+  if (!command) {
+    const arrayInfo = [];
+    const page = parseInt(args[1]) || 1;
+    const numberOfOnePage = 8;
+    //*số thứ tự 1 2 3.....cú pháp ${++i}*//
+    let i = 0;
+    let msg = "";
+
+    for (var [name, value] of (commands)) {
+      name += ``;
+      arrayInfo.push(name);
+    }
+
+    arrayInfo.sort((a, b) => a.data - b.data);
+
+    const startSlice = numberOfOnePage*page - numberOfOnePage;
+    i = startSlice;
+    const returnArray = arrayInfo.slice(startSlice, startSlice + numberOfOnePage);
+
+    for (let item of returnArray) msg += `\n╭┈❏ 【 ${i++} 】• ${item}\n│            𝗨𝘀𝗲𝗽𝗿𝗲𝗳𝗶𝘅: 『${commands.get(item).config.usePrefix}』 \n╰┈➤ 𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: ${commands.get(item).config.description}\n──────────────`;
+
+
+    const siu = `𝗖𝗢𝗠𝗠𝗔𝗡𝗗 𝗟𝗜𝗦𝗧`;
+
+ const text = `\n𝗣𝗮𝗴𝗲 『${page}/${Math.ceil(arrayInfo.length/numberOfOnePage)}』\nCurrently available『${arrayInfo.length}』 command on ${global.config.BOTNAME} Bot\n──────────────\n𝗰𝗿𝗲𝗮𝘁𝗼𝗿: ${global.config.CREATORLINK}`;
+
+    return api.sendMessage(siu + "\n\n" + msg  + text, threadID, async (error, info) => {
+      if (autoUnsend) {
+        await new Promise(resolve => setTimeout(resolve, delayUnsend * 1000));
+        return api.unsendMessage(info.messageID);
+      } else return;
+    }, event.messageID);
+  }
+
+  return api.sendMessage(getText("moduleInfo", command.config.name, command.config.description, `${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}`, command.config.commandCategory, command.config.cooldowns, ((command.config.hasPermssion == 0) ? getText("user") : (command.config.hasPermssion == 1) ? getText("adminGroup") : getText("adminBot")), command.config.credits), threadID, messageID);
 };
