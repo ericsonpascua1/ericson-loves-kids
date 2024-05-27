@@ -6,7 +6,7 @@ module.exports.config = {
 	name: 'owner',
 	version: '1.0.0',
 	hasPermision: 0,
-	credits: 'ericson終.',
+	credits: 'ericson',
 	usePrefix: true,
 	description: 'Display bot owner information',
 	commandCategory: 'system',
