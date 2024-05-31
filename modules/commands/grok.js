@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports["config"] = {
-  name: "grok_by_yenzyjs_ericson",
+  name: "grok",
   version: "1.0.0",
   credits: "Maintained and Well-Developed by YenzyJS  ericson",
   hasPermission: 0,
