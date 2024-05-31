@@ -3,10 +3,10 @@ module.exports.config = {
 		version: "1.0.0",
 		role: 0,
 		aliases: ["Sim"],
-		credits: "ericson",
+		credits: "jerome",
 		description: "Talk to sim",
 		cooldown: 0,
-		hasPrefix: false
+		hasPrefix: true,
 };
 
 module.exports.run = async function({ api, event, args }) {
