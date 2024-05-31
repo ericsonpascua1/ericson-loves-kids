@@ -1,25 +1,24 @@
 module.exports.config = {
 		name: "sim",
 		version: "1.0.0",
-		hasPermssion: 0,
-		credits: "KENLIEPLAYS",
+		role: 0,
+		aliases: ["Sim"],
+		credits: "ericson",
 		description: "Talk to sim",
-		commandCategory: "sim",
-		usages: "[ask]",
-		usePrefix: true,
-		cooldowns: 5,
+		cooldown: 0,
+		hasPrefix: false
 };
 
 module.exports.run = async function({ api, event, args }) {
 		const axios = require("axios");
 		let { messageID, threadID, senderID, body } = event;
 		let tid = threadID,
-		mid = messageID;
+				mid = messageID;
 		const content = encodeURIComponent(args.join(" "));
 		if (!args[0]) return api.sendMessage("Please type a message...", tid, mid);
 		try {
-				const res = await axios.get(`https://simsimi.fun/api/v2/?mode=talk&lang=en&message=${content}&filter=true`);
-				const respond = res.data.success;
+				const res = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${content}`);
+				const respond = res.data.respond;
 				if (res.data.error) {
 						api.sendMessage(`Error: ${res.data.error}`, tid, (error, info) => {
 								if (error) {
