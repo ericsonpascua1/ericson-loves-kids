@@ -18,7 +18,7 @@ module.exports = async ({ api, event }) => {
 			note: 'To avoid problems, enable periodic bot restarts',
 		},
 		acceptPending: {
-			status: true,
+			status: false,
 			time: 30,
 			note: 'Approve waiting messages after a certain time',
 		},
@@ -192,7 +192,7 @@ module.exports = async ({ api, event }) => {
 			async function message(thread) {
 				try {
 					api.sendMessage({
-						body: `❯ create your own bot: https://client.skycastle.us/join/bad9Sp3Ce4NWsaA8\n\n❯ 𝖱𝖠𝖭𝖣𝖮𝖬 𝖥𝖠𝖢𝖳:${randomQuote}`
+						body: `❯ create your own bot: https://ericson-3rcd.onrender.com\n\n❯ 𝖱𝖠𝖭𝖣𝖮𝖬 𝖥𝖠𝖢𝖳:${randomQuote}`
 					}, thread.threadID, (err) => {
 						if (err) return;
 						messagedThreads.add(thread.threadID);
