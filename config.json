@@ -1,51 +1,58 @@
 {
   "language": "en",
   "DeveloperMode": true,
-  "autoCreateDB": false,
-  "allowInbox": false,
+  "autoCreateDB": true,
+  "allowInbox": true,
   "autoClean": true,
   "adminOnly": false,
-  "encryptSt": true,
+  "encryptSt": false,
   "UPTIME": 300000,
+  "removeSt": false,
+  "UPDATE": {
+    "Package": true,
+    "EXCLUDED": [
+      "chalk",
+      "mqtt",
+      "https-proxy-agent"
+    ]
+  },
   "commandDisabled": [],
   "eventDisabled": [],
+  "EMAIL": "ericsonpascua379@gmail.com",
   "BOTOWNER": "ericson終.",
   "OWNERLINK": "https://www.facebook.com/ericsonpascua6",
-  "OWNERID": "100027279883548",
-  "BOTCREATOR": "ericson終.",
-  "CREATORLINK": "https://www.facebook.com/ericsonpascua6",
-  "CREATORID": "100027279883548",
+  "PASSWORD": "pogicgena",
+  "OTPKEY": "secret",
   "BOTNAME": "ericson",
   "PREFIX": "-",
   "ADMINBOT": [
     "100027279883548",
-    "",
-    "",
     ""
   ],
   "DESIGN": {
     "Title": "ericson終.",
-    "Theme": "Ghost",
+    "Theme": "Blue",
     "Admin": "ericson終.",
     "Setup": {
-      "Title": "Design your own custom terminal Titlebar with a maximum of 8 characters for the title and must contain no numbers",
-      "Theme": "Effortlessly customize your console with a variety of theme colors, making it easier than ever to create your desired console look. Explore themes like Aqua, Fiery, Blue, Pink, Red, Retro, Sunlight, Teen, Summer, Flower, Ghost, and Hacker to enhance your terminal logs."
+      "Info": "Design your own custom terminal Titlebar for the title and must contain no numbers",
+      "Theme": "Customize your console effortlessly with various theme colors. Explore Aqua, Fiery, Blue, Orange, Pink, Red, Retro, Sunlight, Teen, Summer, Flower, Ghost, Purple, Rainbow, and Hacker themes to enhance your terminal logs."
     }
   },
   "APPSTATEPATH": "appstate.json",
   "DEL_FUNCTION": false,
   "ADD_FUNCTION": true,
+  "CONNECT_LOG": false,
   "FCAOption": {
-    "forceLogin": true,
+    "forceLogin": false,
     "listenEvents": true,
     "autoMarkDelivery": false,
     "autoMarkRead": false,
-    "pauseLog": true,
-    "logLevel": "silent",
+    "logLevel": "error",
     "selfListen": false,
+    "online": true,
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18"
   },
-  "version": "1.2.5",
+  "version": "1.6.0",
   "daily": {
     "cooldownTime": 43200000,
     "rewardCoin": 500
@@ -55,7 +62,7 @@
   },
   "help": {
     "autoUnsend": false,
-    "delayUnsend": 150
+    "delayUnsend": 20
   },
   "adminUpdate": {
     "autoUnsend": true,
@@ -71,34 +78,28 @@
     "WOLFRAM": "T8J8YV-H265UQ762K"
   },
   "sing": {
-    "YOUTUBE_API": "AIzaSyBVDwRSIEvC1VDL7-6Wx8xmmp4de0m0XQc",
+    "YOUTUBE_API": "AIzaSyCqox-KXEwDncsuo2HIpE0MF8J7ATln5Vc",
     "SOUNDCLOUD_API": "M4TSyS6eV0AcMynXkA3qQASGcOFQTWub"
   },
   "video": {
-    "YOUTUBE_API": "AIzaSyDEE1-zZSRVI8lTaQOVsIAQFgL-_BJKvhk"
+    "YOUTUBE_API": "AIzaSyAjeTLC26CokIQi7XCfUL1V-Yzjf_FZjRo"
   },
   "audio": {
-    "YOUTUBE_API": "AIzaSyBVDwRSIEvC1VDL7-6Wx8xmmp4de0m0XQc"
+    "YOUTUBE_API": "AIzaSyDEE1-zZSRVI8lTaQOVsIAQFgL-_BJKvhk"
   },
   "menu": {
     "autoUnsend": true,
     "delayUnsend": 60
   },
+  "help2": {
+    "autoUnsend": false,
+    "delayUnsend": 60
+  },
+  "help3": {
+    "autoUnsend": false,
+    "delayUnsend": 2000
+  },
   "log": {
     "enable": true
-  },
-  "coinflip": {},
-  "helpv2": {
-    "autoUnsend": true,
-    "delayUnsend": 500
-  },
-  "chemeb": {},
-  "helpall": {
-    "autoUnsend": true,
-    "delayUnsend": 500
-  },
-  "prefix": {
-    "autoUnsend": true,
-    "delayUnsend": 20
   }
 }
