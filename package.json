@@ -60,12 +60,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cliffvincent/Yekfh.git"
+    "url": "git+https://github.com/Nathanielpradas14/ericson-pascua.git"
   },
   "bugs": {
-    "url": "https://github.com/Cliffvincent/issues"
+    "url": "https://github.com/Nathanielpradas14/ericson-pascua.git/issues"
   },
-  "homepage": "https://github.com/Cliffvincent/#readme",
+  "homepage": "https://github.com/Nathanielpradas14/ericson-pascua.git/#readme",
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.24.0",
