@@ -1,6 +1,6 @@
 <h1>EricsonBot🤖<sub><sub><h6>1.3.2🚀</h6></sub></sub></h1>
 
-Welcome to the [EricsonBot](https://replit.com/@ericsonpascua/EricsonBot)🌀 repository. This project is an unofficial bot file inspired by the [Mirai](https://github.com/m1raibot/miraiv2) Repository, and it is entirely developed and maintained by Aki Hayakawa.
+Welcome to the [EricsonBot](https://replit.com/@ericsonpascua/EricsonBot)🌀 repository. This project is an unofficial bot file inspired by the [Mirai](https://github.com/m1raibot/miraiv2) Repository, and it is entirely developed and maintained by ericson.
 
 EricsonBot🤖 is a modified messenger bot file designed by [ericson終.](https://replit.com/@ericsonpascua)🇯🇵. It represents an enhanced version of the Mirai messenger bot, featuring unique improvements.
 
