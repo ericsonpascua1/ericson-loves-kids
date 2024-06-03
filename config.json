@@ -9,7 +9,7 @@
   "UPTIME": 0,
   "commandDisabled": [
     "configv2.js",
-    ""
+    "rankup.js"
   ],
   "eventDisabled": [],
   "EMAIL": "",
