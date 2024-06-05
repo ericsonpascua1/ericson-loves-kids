@@ -1,7 +1,7 @@
 {
   "language": "en",
   "DeveloperMode": true,
-  "autoCreateDB": false,
+  "autoCreateDB": true,
   "allowInbox": false,
   "autoClean": true,
   "adminOnly": false,
