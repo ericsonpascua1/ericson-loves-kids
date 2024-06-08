@@ -29,8 +29,8 @@ module.exports.handleEvent = async function({
 
     async function greet(userChat, api) {
         const greetings = [
-            "gago", "putangina", "tangina", "tanginamo", "putangina", "putanginamo", "fuck", "stupid", "",
-            "tanga", "tanga mo", "bobo", "ampt", "", "", "",
+            "", "", "", "", "", "", "", "", "",
+            ", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "",
             "", "", "", "", "", "", "", "",
             "", "", ""
