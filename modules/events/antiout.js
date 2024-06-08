@@ -2,7 +2,7 @@ module.exports.config = {
  name: "antiout",
  eventType: ["log:unsubscribe"],
  version: "0.0.1",
- credits: "DungUwU",
+ credits: "ericson",
  description: "Listen events"
 };
 
@@ -15,8 +15,8 @@ module.exports.run = async({ event, api, Threads, Users }) => {
  if (type == "self-separation") {
   api.addUserToGroup(event.logMessageData.leftParticipantFbId, event.threadID, (error, info) => {
    if (error) {
-    api.sendMessage(`Ayaw maadd si: ${name} nagkakasad isipin :< `, event.threadID)
-   } else api.sendMessage(`❰ 𝗮𝗻𝘁𝗶𝗼𝘂𝘁❱ tanga bawal ka umalis ${name} lab kasi kita🫶🏻`, event.threadID);
+    api.sendMessage(`Failed to re-add ${name}.`, event.threadID)
+   } else api.sendMessage(`Anti-out is active. Re-adding ${name} back`, event.threadID);
   })
  }
                             }
