@@ -8,6 +8,6 @@ One notable feature is the integration of the `usePrefix` function into every co
 
 Moreover, EricsonBot🤖 offers a user-friendly option for customizing your console design through the `theme` setting in the config.json file, making it accessible and user-friendly, particularly for newcomers.
 
-Experience a world of possibilities with [EricsonBot](https://replit.com/@ericsonpascua/EricsonBot)🌀 - a Facebook Messenger bot file created to enhance your interactions with messenger bots, brought to you by Aki Hayakawa.
+Experience a world of possibilities with [EricsonBot](https://replit.com/@ericsonpascua/EricsonBot)🌀 - a Facebook Messenger bot file created to enhance your interactions with messenger bots, brought to you by ericson pascua.
 <br>
 <h2>Updated on: August 23, 2023<br>Creation Date: August 1, 2023</h2>
