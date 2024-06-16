@@ -60,12 +60,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YANDEVA/BotPack.git"
+    "url": "git+https://github.com/ericsonpascua1/ericson-loves-kids.git"
   },
   "bugs": {
-    "url": "https://github.com/YANDEVA/BotPack/issues"
+    "url": "https://github.com/ericsonpascua1/ericson-loves-kids/issues"
   },
-  "homepage": "https://github.com/YANDEVA/BotPack#readme",
+  "homepage": "https://github.com/ericsonpascua1/ericson-loves-kids#readme",
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.24.0",
